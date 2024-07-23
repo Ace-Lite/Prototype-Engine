@@ -1,0 +1,108 @@
+#include "lua.h"
+#include "lualib.h"
+#include "lua_events.h"
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+class luau_event
+{
+	public:
+		bool placeholder = false;
+};
+
+class keydown : public luau_event
+{
+	public:
+		int event_func;
+
+		void callFunc(lua_State* L, string key_down)
+		{
+			lua_getref(L, event_func);	
+			lua_pushstring(L, key_down.c_str());
+			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
+				cerr << "Error calling function: " << lua_tostring(L, -1) << std::endl;
+				lua_pop(L, 1);
+			}
+		}
+};
+
+vector<keydown*> keydown_events;
+
+class keyup : public luau_event
+{
+	public:
+		int event_func;
+
+		void callFunc(lua_State* L, string key_up)
+		{
+			lua_getref(L, event_func);
+			lua_pushstring(L, key_up.c_str());
+			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
+				cerr << "Error calling function: " << lua_tostring(L, -1) << std::endl;
+				lua_pop(L, 1);
+			}
+		}
+};
+
+vector<keyup*> keyup_events;
+
+static int createEvent(lua_State* L)
+{
+	const char* constchname = luaL_checkstring(L, 1);
+	string name = constchname;
+
+	luaL_checktype(L, 2, LUA_TFUNCTION);
+	int ref_int = lua_ref(L, 2);
+	
+	if (name == "keyDown" || name == "keydown")
+	{
+		keydown newevent;
+		newevent.event_func = ref_int;
+		keydown_events.push_back(&newevent);
+
+	}
+	else if (name == "keyUp" || name == "keyup")
+	{
+		keyup newevent;
+		newevent.event_func = ref_int;
+		keyup_events.push_back(&newevent);
+	}
+
+	lua_pop(L, 1);
+	return 0;
+}
+
+void events_keydown_press(lua_State* L, std::string key_event)
+{
+	if (keydown_events.empty())
+		cout << "No Keydown Events" << endl;
+	else
+		for (auto it = keydown_events.begin(); it != keydown_events.end(); ++it)
+		{
+			(*it)->callFunc(L, key_event);
+		}
+}
+
+void events_keyup_press(lua_State* L, std::string key_event)
+{
+	if (keyup_events.empty())
+		cout << "No Keyup Events" << endl;
+	else
+		for (auto it = keyup_events.begin(); it != keyup_events.end(); ++it)
+		{
+			(*it)->callFunc(L, key_event);
+		}
+}
+
+static const luaL_Reg engineevents_funcs[] = {
+	{"add", createEvent},
+	{NULL, NULL},
+};
+
+int enginelua_events(lua_State* L)
+{
+	luaL_register(L, LUA_ENGINEEVENTS, engineevents_funcs);
+	return 1;
+}

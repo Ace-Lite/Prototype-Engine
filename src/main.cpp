@@ -16,6 +16,7 @@
 
 // Engine Lua Libs
 #include "lua_api.h"
+#include "lua_events.h"
 
 // OpenGL
 #include "gl/glew.h"
@@ -308,6 +309,7 @@ int main(int arg)
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
 	luaL_enginelibs(L);
+	luaL_eventslibs(L);
 
 	for (auto scriptfile = filesystem::recursive_directory_iterator(luapath); scriptfile != filesystem::recursive_directory_iterator(); scriptfile++)
 	{
@@ -352,13 +354,16 @@ int main(int arg)
 	//	Events
 	//
 
-
 	SDL_Event e;
 	bool quit = false;
 	while (quit == false) {
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT)
 				quit = true;
+			else if (e.type == SDL_KEYDOWN)
+				events_keydown_press(L, SDL_GetKeyName(e.key.keysym.sym));
+			else if (e.type == SDL_KEYUP)
+				events_keyup_press(L, SDL_GetKeyName(e.key.keysym.sym));
 		}
 		
 		render();

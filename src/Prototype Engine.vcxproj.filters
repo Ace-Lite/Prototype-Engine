@@ -198,6 +198,9 @@
     <ClCompile Include="lua_render.cpp">
       <Filter>Source Files\LUAU_API</Filter>
     </ClCompile>
+    <ClCompile Include="lua_events.cpp">
+      <Filter>Source Files\LUAU_API</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="luau\lapi.h">
@@ -319,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="r_glmain.h">
       <Filter>Header Files\RENDER</Filter>
+    </ClInclude>
+    <ClInclude Include="lua_events.h">
+      <Filter>Header Files\LUAU_API</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

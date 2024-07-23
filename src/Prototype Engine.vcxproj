@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{6E9160D1-3316-4DD0-96C5-4EBCF92C361F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\[00] Project Files\PrototypeEngine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\[00] Project Files\PrototypeEngine\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\[00] Project Files\PrototypeEngine\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\[00] Project Files\PrototypeEngine\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\Git-Projects\PrototypeEngine\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Git-Projects\PrototypeEngine\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>D:\Git-Projects\PrototypeEngine\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Git-Projects\PrototypeEngine\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git-Projects\PrototypeEngine\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Git-Projects\PrototypeEngine\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git-Projects\PrototypeEngine\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Git-Projects\PrototypeEngine\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Ast.cpp" />
+    <ClCompile Include="BuiltinFolding.cpp" />
+    <ClCompile Include="Builtins.cpp" />
+    <ClCompile Include="BytecodeBuilder.cpp" />
+    <ClCompile Include="Compiler.cpp" />
+    <ClCompile Include="Confusables.cpp" />
+    <ClCompile Include="ConstantFolding.cpp" />
+    <ClCompile Include="CostModel.cpp" />
+    <ClCompile Include="lcode.cpp" />
+    <ClCompile Include="Lexer.cpp" />
+    <ClCompile Include="Location.cpp" />
+    <ClCompile Include="luau\lapi.cpp" />
+    <ClCompile Include="luau\laux.cpp" />
+    <ClCompile Include="luau\lbaselib.cpp" />
+    <ClCompile Include="luau\lbitlib.cpp" />
+    <ClCompile Include="luau\lbuffer.cpp" />
+    <ClCompile Include="luau\lbuflib.cpp" />
+    <ClCompile Include="luau\lbuiltins.cpp" />
+    <ClCompile Include="luau\lcorolib.cpp" />
+    <ClCompile Include="luau\ldblib.cpp" />
+    <ClCompile Include="luau\ldebug.cpp" />
+    <ClCompile Include="luau\ldo.cpp" />
+    <ClCompile Include="luau\lfunc.cpp" />
+    <ClCompile Include="luau\lgc.cpp" />
+    <ClCompile Include="luau\lgcdebug.cpp" />
+    <ClCompile Include="luau\linit.cpp" />
+    <ClCompile Include="luau\lmathlib.cpp" />
+    <ClCompile Include="luau\lmem.cpp" />
+    <ClCompile Include="luau\lnumprint.cpp" />
+    <ClCompile Include="luau\lobject.cpp" />
+    <ClCompile Include="luau\loslib.cpp" />
+    <ClCompile Include="luau\lperf.cpp" />
+    <ClCompile Include="luau\lstate.cpp" />
+    <ClCompile Include="luau\lstring.cpp" />
+    <ClCompile Include="luau\lstrlib.cpp" />
+    <ClCompile Include="luau\ltable.cpp" />
+    <ClCompile Include="luau\ltablib.cpp" />
+    <ClCompile Include="luau\ltm.cpp" />
+    <ClCompile Include="luau\ludata.cpp" />
+    <ClCompile Include="luau\lutf8lib.cpp" />
+    <ClCompile Include="luau\lvmexecute.cpp" />
+    <ClCompile Include="luau\lvmload.cpp" />
+    <ClCompile Include="luau\lvmutils.cpp" />
+    <ClCompile Include="lua_api.cpp" />
+    <ClCompile Include="lua_base.cpp" />
+    <ClCompile Include="lua_render.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="r_main.cpp" />
+    <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="TableShape.cpp" />
+    <ClCompile Include="TimeTrace.cpp" />
+    <ClCompile Include="Types.cpp" />
+    <ClCompile Include="ValueTracking.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\glad\glad.h" />
+    <ClInclude Include="..\include\GL\eglew.h" />
+    <ClInclude Include="..\include\GL\glew.h" />
+    <ClInclude Include="..\include\GL\glxew.h" />
+    <ClInclude Include="..\include\GL\wglew.h" />
+    <ClInclude Include="..\include\luacode.h" />
+    <ClInclude Include="..\include\Luau\Bytecode.h" />
+    <ClInclude Include="..\include\Luau\BytecodeBuilder.h" />
+    <ClInclude Include="..\include\Luau\BytecodeUtils.h" />
+    <ClInclude Include="..\include\Luau\Common.h" />
+    <ClInclude Include="..\include\Luau\Compiler.h" />
+    <ClInclude Include="..\include\Luau\DenseHash.h" />
+    <ClInclude Include="..\include\Luau\ExperimentalFlags.h" />
+    <ClInclude Include="..\include\Luau\VecDeque.h" />
+    <ClInclude Include="BuiltinFolding.h" />
+    <ClInclude Include="Builtins.h" />
+    <ClInclude Include="ConstantFolding.h" />
+    <ClInclude Include="CostModel.h" />
+    <ClInclude Include="luau\lapi.h" />
+    <ClInclude Include="luau\lbuffer.h" />
+    <ClInclude Include="luau\lbuiltins.h" />
+    <ClInclude Include="luau\lbytecode.h" />
+    <ClInclude Include="luau\lcommon.h" />
+    <ClInclude Include="luau\ldebug.h" />
+    <ClInclude Include="luau\ldo.h" />
+    <ClInclude Include="luau\lfunc.h" />
+    <ClInclude Include="luau\lgc.h" />
+    <ClInclude Include="luau\lmem.h" />
+    <ClInclude Include="luau\lnumutils.h" />
+    <ClInclude Include="luau\lobject.h" />
+    <ClInclude Include="luau\lstate.h" />
+    <ClInclude Include="luau\lstring.h" />
+    <ClInclude Include="luau\ltable.h" />
+    <ClInclude Include="luau\ltm.h" />
+    <ClInclude Include="luau\ludata.h" />
+    <ClInclude Include="luau\lvm.h" />
+    <ClInclude Include="lua_api.h" />
+    <ClInclude Include="r_glmain.h" />
+    <ClInclude Include="Types.h" />
+    <ClInclude Include="ValueTracking.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

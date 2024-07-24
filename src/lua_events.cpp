@@ -57,7 +57,6 @@ class keyup : public luau_event
 			}
 			else
 			{
-				event_func = store;
 				cout << "Activate " << event_func << endl;
 			}
 			lua_unref(L, event_func);
@@ -67,6 +66,32 @@ class keyup : public luau_event
 
 vector<keyup*> keyup_events;
 
+class thinkframe : public luau_event
+{
+public:
+
+	void callFunc(lua_State* L)
+	{
+		lua_settop(L, 0);
+
+		lua_getref(L, event_func);
+		int store = lua_ref(L, -1);
+
+		if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
+			cerr << "Error calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
+			lua_pop(L, 1);
+		}
+		else
+			event_func = store;
+
+		lua_unref(L, event_func);
+		event_func = store;
+	}
+};
+
+vector<thinkframe*> thinkframe_events;
+
+// TODO: make name upper/lower case, no need to be case sensitive here.
 static int createEvent(lua_State* L)
 {
 	const char* constchname = luaL_checkstring(L, 1);
@@ -88,6 +113,17 @@ static int createEvent(lua_State* L)
 		keyup newevent;
 		newevent.event_func = ref_int;
 		keyup_events.push_back(&newevent);
+	}
+	else if (name == "thinkFrame")
+	{
+		thinkframe newevent;
+		newevent.event_func = ref_int;
+		thinkframe_events.push_back(&newevent);
+	}
+	else if (name == "scriptLoad")
+	{
+		lua_pcall(L, 1, 0, 0);
+		lua_unref(L, ref_int);
 	}
 
 	lua_pop(L, 1);
@@ -115,6 +151,16 @@ void events_keyup_press(lua_State* L, std::string key_event)
 			(*it)->callFunc(L, key_event);
 		}
 }
+
+void events_thinkframe(lua_State* L)
+{
+	if (!thinkframe_events.empty())
+		for (auto it = thinkframe_events.begin(); it != thinkframe_events.end(); ++it)
+		{
+			(*it)->callFunc(L);
+		}
+}
+
 
 static const luaL_Reg engineevents_funcs[] = {
 	{"add", createEvent},

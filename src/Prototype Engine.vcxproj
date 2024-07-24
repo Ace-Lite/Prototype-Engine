@@ -185,6 +185,7 @@
     <ClCompile Include="lua_base.cpp" />
     <ClCompile Include="lua_events.cpp" />
     <ClCompile Include="lua_render.cpp" />
+    <ClCompile Include="lua_sdl.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="r_main.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="luau\lvm.h" />
     <ClInclude Include="lua_api.h" />
     <ClInclude Include="lua_events.h" />
+    <ClInclude Include="lua_sdl.h" />
     <ClInclude Include="r_glmain.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="ValueTracking.h" />

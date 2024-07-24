@@ -394,6 +394,9 @@ int main(int arg)
 		render();
 		SDL_GL_SwapWindow(window);
 
+		// Lua
+		events_thinkframe(L);
+
 		if (quit == true)
 		{
 			// Close Lua for apperant reasons

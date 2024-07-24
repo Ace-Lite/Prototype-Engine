@@ -9,6 +9,7 @@
 #define GLEW_STATIC
 
 #include <SDL.h>
+//#include <SDL_mixer.h>
 
 #include <lua.h>
 #include <lualib.h>
@@ -255,6 +256,11 @@ int main(int arg)
 		}
 	}
 
+	//if (Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3) < 0) {
+	//	cout << "Error during SDL_Mix_Init: " << Mix_GetError() << endl;
+	//	Mix_Quit();
+	//}
+
 
 	//
 	// GL Renderer Setup
@@ -271,6 +277,7 @@ int main(int arg)
 	{
 		cout << "Error during SDL_GL_CreateContext: " << SDL_GetError() << endl;
 		SDL_Delay(250);
+		//Mix_Quit();
 		SDL_Quit();
 		return -1;
 	}
@@ -283,6 +290,7 @@ int main(int arg)
 		{
 			cout << "Error during initiation of GLEW: " << glewGetErrorString(glewError) << endl;
 			SDL_Delay(115000);
+			//Mix_Quit();
 			SDL_Quit();
 			return -1;
 		}
@@ -297,6 +305,7 @@ int main(int arg)
 		{
 			cout << "Error while initializing OpenGL." << endl;
 			SDL_Delay(115000);
+			//Mix_Quit();
 			SDL_Quit();
 			return -1;
 		}
@@ -391,6 +400,7 @@ int main(int arg)
 			lua_close(L);
 
 			SDL_DestroyWindow(window);
+			//Mix_Quit();
 			SDL_Quit();
 			return 0;
 		}

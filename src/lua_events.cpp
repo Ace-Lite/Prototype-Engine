@@ -9,22 +9,31 @@ using namespace std;
 class luau_event
 {
 	public:
-		bool placeholder = false;
+		int event_func;
 };
 
 class keydown : public luau_event
 {
 	public:
-		int event_func;
 
 		void callFunc(lua_State* L, string key_down)
 		{
-			lua_getref(L, event_func);	
+			lua_settop(L, 0);
+
+			lua_getref(L, event_func);
+			int store = lua_ref(L, -1);
+			
 			lua_pushstring(L, key_down.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-				cerr << "Error calling function: " << lua_tostring(L, -1) << std::endl;
+				cerr << "Error calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 				lua_pop(L, 1);
 			}
+			else
+			{
+				cout << "Activate " << event_func << endl;
+			}
+			lua_unref(L, event_func);
+			event_func = store;
 		}
 };
 
@@ -33,16 +42,26 @@ vector<keydown*> keydown_events;
 class keyup : public luau_event
 {
 	public:
-		int event_func;
 
 		void callFunc(lua_State* L, string key_up)
 		{
+			lua_settop(L, 0);
+
 			lua_getref(L, event_func);
+			int store = lua_ref(L, -1);
+
 			lua_pushstring(L, key_up.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-				cerr << "Error calling function: " << lua_tostring(L, -1) << std::endl;
+				cerr << "Error calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 				lua_pop(L, 1);
 			}
+			else
+			{
+				event_func = store;
+				cout << "Activate " << event_func << endl;
+			}
+			lua_unref(L, event_func);
+			event_func = store;
 		}
 };
 
@@ -55,13 +74,14 @@ static int createEvent(lua_State* L)
 
 	luaL_checktype(L, 2, LUA_TFUNCTION);
 	int ref_int = lua_ref(L, 2);
+
+	lua_rawseti(L, LUA_REGISTRYINDEX, ref_int);
 	
 	if (name == "keyDown" || name == "keydown")
 	{
 		keydown newevent;
 		newevent.event_func = ref_int;
 		keydown_events.push_back(&newevent);
-
 	}
 	else if (name == "keyUp" || name == "keyup")
 	{

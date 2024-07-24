@@ -1,0 +1,1 @@
+//This will be space for saving current information about objects, level etc. And load it same

@@ -18,14 +18,12 @@ class keydown : public luau_event
 
 		void callFunc(lua_State* L, string key_down)
 		{
-			lua_settop(L, 0);
-
 			lua_getref(L, event_func);
 			int store = lua_ref(L, -1);
 			
 			lua_pushstring(L, key_down.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-				cerr << "Error calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
+				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 				lua_pop(L, 1);
 			}
 			else
@@ -45,14 +43,12 @@ class keyup : public luau_event
 
 		void callFunc(lua_State* L, string key_up)
 		{
-			lua_settop(L, 0);
-
 			lua_getref(L, event_func);
 			int store = lua_ref(L, -1);
 
 			lua_pushstring(L, key_up.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-				cerr << "Error calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
+				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 				lua_pop(L, 1);
 			}
 			else
@@ -72,17 +68,13 @@ public:
 
 	void callFunc(lua_State* L)
 	{
-		lua_settop(L, 0);
-
 		lua_getref(L, event_func);
 		int store = lua_ref(L, -1);
 
-		if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-			cerr << "Error calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
+		if (lua_pcall(L, 0, 0, 0) != LUA_OK) {
+			cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 			lua_pop(L, 1);
 		}
-		else
-			event_func = store;
 
 		lua_unref(L, event_func);
 		event_func = store;

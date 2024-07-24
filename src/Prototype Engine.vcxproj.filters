@@ -34,6 +34,9 @@
     <Filter Include="Header Files\RENDER">
       <UniqueIdentifier>{274506ca-4312-4fe6-8c62-a5978d560fa3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\WORLD">
+      <UniqueIdentifier>{816c6658-82dd-47f5-b27d-19cf523c9f6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -135,9 +138,6 @@
     <ClCompile Include="luau\lvmutils.cpp">
       <Filter>Source Files\LUAU</Filter>
     </ClCompile>
-    <ClCompile Include="r_main.cpp">
-      <Filter>Source Files\RENDER</Filter>
-    </ClCompile>
     <ClCompile Include="BuiltinFolding.cpp">
       <Filter>Source Files\LUAU</Filter>
     </ClCompile>
@@ -202,6 +202,18 @@
       <Filter>Source Files\LUAU_API</Filter>
     </ClCompile>
     <ClCompile Include="lua_sdl.cpp">
+      <Filter>Source Files\LUAU_API</Filter>
+    </ClCompile>
+    <ClCompile Include="obj_main.cpp">
+      <Filter>Source Files\WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="tilew_main.cpp">
+      <Filter>Source Files\WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="lua_helper.cpp">
+      <Filter>Source Files\LUAU_API</Filter>
+    </ClCompile>
+    <ClCompile Include="lua_iodata.cpp">
       <Filter>Source Files\LUAU_API</Filter>
     </ClCompile>
   </ItemGroup>

@@ -23,4 +23,9 @@ class tile_world
 {
 	int setup;
 	vector<tile_chunk*> chunks;
+
+	int active_chunk;
+
+
+
 };

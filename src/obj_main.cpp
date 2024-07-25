@@ -8,6 +8,12 @@ using namespace std;
 // Preferably one function/method for specific action in very consise way
 // If someone thinks of better solution, go ahead!
 
+#define DEFAULT_GRAVITY 9.81f
+#define BLOCKMAP_DIM 256.00f
+
+// Gravitational flags
+#define GF_COLLISION	1 << 0
+#define GF_GRAVITY		1 << 1
 
 // Not sure what to do here, I would have to wait for rendering first anyway
 // I do not want to repeat DOOM situation where states are tied to animations.
@@ -22,7 +28,8 @@ public:
 class Entity // Entity without any logic (meant to be controlled by something else)
 {
 	public:
-		float x, y, z; // Z should be used for 3D in case we went that direction
+		// NOTE: Feel free to change these into Vector3 values.
+		float x, y, z; // Z should be used for 3D in case we went that direction 
 		float depth; // Depth in 2D for 3D objects
 
 		float jaw, pitch, roll; // For 3D objects in both modes. (pitch for 2D sprites) and sprite flipping
@@ -31,6 +38,8 @@ class Entity // Entity without any logic (meant to be controlled by something el
 		bool visible = false; // Mostly for 2D, could possibly be used for 3D culling.
 		
 		float alpha;
+
+		int blockmap; // Chunk position
 
 		// Visuals
 		Animation anim_data;
@@ -42,7 +51,9 @@ vector<int*> definitions;
 class Object : public Entity // Entity with gamelogic
 {
 public:
-	int physics_flags;
+	int physics_flags = 0;
+	float gravity_scale = 1.0f;
+
 
 	// Object relations
 	Object *target;
@@ -55,29 +66,50 @@ public:
 	int table;
 };
 
-vector<Entity*> entity_list;
+vector<Object*> object_list;
+
+// prototype blockmap, refactor when world is made.
+static vector<vector<Object*>> blockmap; //this setup is ridiculous.
 
 class EntityManager
 {
 	public:
 		void create()
 		{
-			Entity *entity;
 			Object obj;
-
-			entity = &obj;
-			entity_list.push_back(entity); // probably not best solution, probably achives object slicing
+			object_list.push_back(&obj); // probably not best solution, probably achives object slicing
 		}
 
 
 		void clear()
 		{
-			if (!entity_list.empty()) // merely making sure to have no memory leaks
-				for (auto it = entity_list.begin(); it != entity_list.end(); ++it)
+			if (!object_list.empty()) // merely making sure to have no memory leaks
+			{
+				for (auto it = object_list.begin(); it != object_list.end(); ++it)
 				{
 					delete(*it);
 				}
+			}
 
-			entity_list.clear();
+			object_list.clear();
 		}
+
+		void iter_think()
+		{
+			if (!object_list.empty()) // merely making sure to have no memory leaks
+			{
+				for (auto it = object_list.begin(); it != object_list.end(); ++it)
+				{
+
+					if ((*it)->physics_flags & GF_GRAVITY)
+						continue;
+
+					// Collision Checks
+					if ((*it)->physics_flags & GF_COLLISION)
+						continue;
+
+				}
+			}
+		}
+
 };

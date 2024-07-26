@@ -84,7 +84,7 @@ public:
 		return lerp(1.00f - powf(1.00f - t, 3.00f), start, end);
 	}
 
-	float inOutQuad(float t, float start, float end) {
+	float inOutCubic(float t, float start, float end) {
 		float nt = (t < 0.5f) ? 4.00f * t * t * t : 1.00f - powf(-2.00f * t + 2.00f, 3.00f) / 2;
 
 		return lerp(nt, start, end);
@@ -112,15 +112,15 @@ public:
 	//	QUINT
 	//
 
-	float inQuart(float t, float start, float end) {
+	float inQuint(float t, float start, float end) {
 		return lerp(t * t * t * t * t, start, end);
 	}
 
-	float outQuart(float t, float start, float end) {
+	float outQuint(float t, float start, float end) {
 		return lerp(1.00f - powf(1.00f - t, 5.00f), start, end);
 	}
 
-	float inOutQuart(float t, float start, float end) {
+	float inOutQuint(float t, float start, float end) {
 		float nt = (t < 0.5f) ? 16.00f * t * t * t * t * t : 1.00f - powf(-2.00f * t + 2.00f, 5.00f) / 2;
 
 		return lerp(nt, start, end);

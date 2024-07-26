@@ -204,10 +204,10 @@
     <ClCompile Include="lua_sdl.cpp">
       <Filter>Source Files\LUAU_API</Filter>
     </ClCompile>
-    <ClCompile Include="obj_main.cpp">
+    <ClCompile Include="entities.cpp">
       <Filter>Source Files\WORLD</Filter>
     </ClCompile>
-    <ClCompile Include="tilew_main.cpp">
+    <ClCompile Include="tiles.cpp">
       <Filter>Source Files\WORLD</Filter>
     </ClCompile>
     <ClCompile Include="lua_helper.cpp">
@@ -215,6 +215,12 @@
     </ClCompile>
     <ClCompile Include="lua_iodata.cpp">
       <Filter>Source Files\LUAU_API</Filter>
+    </ClCompile>
+    <ClCompile Include="ease.cpp">
+      <Filter>Source Files\MATH</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>Source Files\RENDER</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

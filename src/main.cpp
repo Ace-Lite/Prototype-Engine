@@ -9,6 +9,7 @@
 #define GLEW_STATIC
 
 #include <SDL.h>
+#include <SDL_image.h>
 //#include <SDL_mixer.h>
 
 #include <lua.h>
@@ -187,32 +188,12 @@ int main(int arg)
 	//	File System Declarations
 	//
 
-	char const* filepath = SDL_GetBasePath();
+	string filepath = SDL_GetBasePath();
 
-	std::filesystem::path luapath;
-	std::filesystem::path datapath;
+	std::filesystem::path luapath = filepath + "/scripts";
+	std::filesystem::path datapath = filepath + "/data";
 
-	for (auto i = filesystem::directory_iterator(filepath); i != filesystem::directory_iterator(); i++)
-	{
-		if (i->is_directory())
-		{
-			std::string file_str = i->path().stem().string();
-			std::string path_str = i->path().string();
-
-			if (file_str == "scripts")
-			{
-				luapath = path_str;
-			}
-			else if (file_str == "data")
-			{
-				datapath = path_str;
-			}
-		}
-		else
-			continue;
-	}
-
-	if (!luapath.c_str())
+	if (!filesystem::exists(luapath))
 	{
 #ifdef DEBUG_MODE
 		cout << "[Debug ERROR] No path to lua was found." << endl;
@@ -220,7 +201,7 @@ int main(int arg)
 		return 0;
 	}
 
-	if (!datapath.c_str())
+	if (!filesystem::exists(datapath))
 	{
 #ifdef DEBUG_MODE
 		cout << "[Debug ERROR] No path to data was found." << endl;
@@ -322,43 +303,82 @@ int main(int arg)
 	luaL_eventslibs(L);
 	luaL_sdllibs(L);
 
-	for (auto scriptfile = filesystem::recursive_directory_iterator(luapath); scriptfile != filesystem::recursive_directory_iterator(); scriptfile++)
+	std::filesystem::path initlua = luapath.string() + "/init.luau";
+
+	if (!filesystem::exists(initlua))
 	{
-		std::string std_extension = scriptfile->path().filename().extension().string();
-
-		if (scriptfile->is_regular_file() && (std_extension == ".lua" || std_extension == ".luau"))
+		for (auto scriptfile = filesystem::recursive_directory_iterator(luapath); scriptfile != filesystem::recursive_directory_iterator(); scriptfile++)
 		{
-			std::string text = readFile(scriptfile->path());
-			const char* chartext = text.c_str();
+			std::string std_extension = scriptfile->path().filename().extension().string();
 
-			if (chartext[0] != '\0')
+			if (scriptfile->is_regular_file() && (std_extension == ".lua" || std_extension == ".luau"))
 			{
+				std::string text = readFile(scriptfile->path());
+				const char* chartext = text.c_str();
 
-				size_t outsize;
-				std::string filename = scriptfile->path().filename().string();
-				char* script = luau_compile(chartext, strlen(chartext), nullptr, &outsize);
-
-				if (outsize > 0)
+				if (chartext[0] != '\0')
 				{
-					int err = luau_load(L, filename.c_str(), script, outsize, 0);
-					if (err == 1)
+
+					size_t outsize;
+					std::string filename = scriptfile->path().filename().string();
+					char* script = luau_compile(chartext, strlen(chartext), nullptr, &outsize);
+
+					if (outsize > 0)
 					{
-						cout << lua_tostring(L, -1) << endl;
-						free(script);
+						int err = luau_load(L, filename.c_str(), script, outsize, 0);
+						if (err == 1)
+						{
+							cout << lua_tostring(L, -1) << endl;
+							free(script);
+						}
+						else
+						{
+							cout << "Script: " << filename.c_str() << " Loaded" << endl;
+							lua_call(L, 0, 0);
+						}
 					}
-					else 
-					{
-						cout << "Script: " << filename.c_str() << " Loaded" << endl;
-						lua_call(L, 0, 0);
-					}
+
+
 				}
-
-
+			}
+			else
+			{
+				continue;
 			}
 		}
-		else
-			continue;
 	}
+	else
+	{
+		std::string text = readFile(initlua);
+		const char* chartext = text.c_str();
+
+		if (chartext[0] != '\0')
+		{
+
+			size_t outsize;
+			std::string filename = initlua.filename().string();
+			char* script = luau_compile(chartext, strlen(chartext), nullptr, &outsize);
+
+			if (outsize > 0)
+			{
+				int err = luau_load(L, filename.c_str(), script, outsize, 0);
+				if (err == 1)
+				{
+					cout << lua_tostring(L, -1) << endl;
+					free(script);
+				}
+				else
+				{
+					cout << "Script: " << filename.c_str() << " Loaded" << endl;
+					lua_call(L, 0, 0);
+				}
+			}
+		}
+	}
+
+	//
+	//	Sprite Allocation
+	//
 
 
 	//

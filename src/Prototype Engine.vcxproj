@@ -146,6 +146,7 @@
     <ClCompile Include="Confusables.cpp" />
     <ClCompile Include="ConstantFolding.cpp" />
     <ClCompile Include="CostModel.cpp" />
+    <ClCompile Include="ease.cpp" />
     <ClCompile Include="lcode.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="Location.cpp" />
@@ -189,11 +190,12 @@
     <ClCompile Include="lua_render.cpp" />
     <ClCompile Include="lua_sdl.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="obj_main.cpp" />
+    <ClCompile Include="entities.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="sprite.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TableShape.cpp" />
-    <ClCompile Include="tilew_main.cpp" />
+    <ClCompile Include="tiles.cpp" />
     <ClCompile Include="TimeTrace.cpp" />
     <ClCompile Include="Types.cpp" />
     <ClCompile Include="ValueTracking.cpp" />

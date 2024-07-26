@@ -37,6 +37,9 @@
     <Filter Include="Source Files\WORLD">
       <UniqueIdentifier>{816c6658-82dd-47f5-b27d-19cf523c9f6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\MATH">
+      <UniqueIdentifier>{b0f6d0fc-d01a-4fe3-bba7-3655d1f904cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

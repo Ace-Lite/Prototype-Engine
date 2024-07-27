@@ -10,7 +10,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-//#include <SDL_mixer.h>
+#include <SDL_mixer.h>
 
 #include <lua.h>
 #include <lualib.h>
@@ -23,15 +23,15 @@
 
 // OpenGL
 #include "gl/glew.h"
+#include "gl_init.h"
 #include "SDL_opengl.h"
 
-#include "r_glmain.h"
+#include "gl_init.h"
+
+// File loader
+#include "e_filesys.h"
 
 SDL_GLContext gContext;
-GLuint gProgramID = 0;
-GLint gVertexPos2DLocation = -1;
-GLuint gVBO = 0;
-GLuint gIBO = 0;
 
 bool gRenderQuad = true;
 
@@ -39,148 +39,6 @@ using namespace std;
 
 const int WIN_WIDTH = 400;
 const int WIN_HEIGHT = 400;
-
-std::string readFile(filesystem::path path)
-{
-	// Open the stream to 'lock' the file.
-	std::ifstream f(path, std::ios::in | std::ios::binary);
-
-	// Obtain the size of the file.
-	const auto sz = filesystem::file_size(path);
-
-	// Create a buffer.
-	std::string result(sz, '\0');
-
-	// Read the whole file into the buffer.
-	f.read(result.data(), sz);
-
-	return result;
-}
-
-bool initGL()
-{
-	bool noerr = true;
-
-	gProgramID = glCreateProgram();
-
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-	const GLchar* vertexShaderSource[] = {
-		"#version 140\nin vec2 LVertexPos2D; void main() { gl_Position = vec4( LVertexPos2D.x, LVertexPos2D.y, 0, 1 ); }"
-	};
-
-	glShaderSource(vertexShader, 1, vertexShaderSource, nullptr);
-
-	glCompileShader(vertexShader);
-
-	GLint vShaderCompiled = GL_FALSE;
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vShaderCompiled);
-
-	if (vShaderCompiled != GL_TRUE)
-	{
-		cout << "Unable to compile vertex shader: " << vertexShader << endl;
-		noerr = false;
-	}
-	else
-	{
-		glAttachShader(gProgramID, vertexShader);
-
-		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		const GLchar* fragmentShaderSource[] =
-		{
-			"#version 140\nout vec4 LFragment; void main() { LFragment = vec4( 1.0, 1.0, 1.0, 1.0 ); }"
-		};
-
-		glShaderSource(fragmentShader, 1, fragmentShaderSource, nullptr);
-
-		glCompileShader(fragmentShader);
-
-		GLint fShaderCompiled = GL_FALSE;
-		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fShaderCompiled);
-		if (fShaderCompiled != GL_TRUE)
-		{
-			cout << "Unable to compile fragment shader: " << fragmentShader << endl;
-			noerr = false;
-		}
-		else
-		{
-			glAttachShader(gProgramID, fragmentShader);
-
-			glLinkProgram(gProgramID);
-
-			GLint programSuccess = GL_TRUE;
-			glGetProgramiv(gProgramID, GL_LINK_STATUS, &programSuccess);
-			if (programSuccess != GL_TRUE)
-			{
-				cout << "Error linking program: " << gProgramID << endl;
-				noerr = false;
-			}
-			else
-			{
-
-				gVertexPos2DLocation = glGetAttribLocation(gProgramID, "LVertexPos2D");
-				if (gVertexPos2DLocation == -1)
-				{
-					cout << "LVertexPos2D is not a valid glsl program variable: " << fragmentShader << endl;
-					noerr = false;
-				}
-				else
-				{
-					glClearColor(0.f, 0.f, 0.f, 1.f);
-
-					//VBO data
-					GLfloat vertexData[] =
-					{
-						-0.5f, -0.5f,
-						 0.5f, -0.5f,
-						 0.5f,  0.5f,
-						-0.5f,  0.5f
-					};
-
-					//IBO data
-					GLuint indexData[] = { 0, 1, 2, 3 };
-
-					//Create VBO
-					glGenBuffers(1, &gVBO);
-					glBindBuffer(GL_ARRAY_BUFFER, gVBO);
-					glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), vertexData, GL_STATIC_DRAW);
-
-					//Create IBO
-					glGenBuffers(1, &gIBO);
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIBO);
-					glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLuint), indexData, GL_STATIC_DRAW);
-				}
-			}
-		}
-	}
-
-	return noerr;
-}
-
-void render()
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	if (gRenderQuad)
-	{
-
-		glUseProgram(gProgramID);
-		glEnableVertexAttribArray(gVertexPos2DLocation);
-
-		glBindBuffer(GL_ARRAY_BUFFER, gVBO);
-		glVertexAttribPointer(gVertexPos2DLocation, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
-
-		//Set index data and render
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIBO);
-		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, nullptr);
-
-		//Disable vertex position
-		glDisableVertexAttribArray(gVertexPos2DLocation);
-
-		//Unbind program
-		glUseProgram(NULL);
-	}
-}
 
 int main(int arg)
 {
@@ -213,6 +71,8 @@ int main(int arg)
 	cout << "[Debug NOTE] Path to lua & data was found!" << endl;
 #endif
 
+	loadDataFolder(datapath);
+
 	//
 	//	SDL Setup
 	//
@@ -237,10 +97,10 @@ int main(int arg)
 		}
 	}
 
-	//if (Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3) < 0) {
-	//	cout << "Error during SDL_Mix_Init: " << Mix_GetError() << endl;
-	//	Mix_Quit();
-	//}
+	if (Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3) < 0) {
+		cout << "Error during SDL_Mix_Init: " << Mix_GetError() << endl;
+		Mix_Quit();
+	}
 
 
 	//
@@ -258,7 +118,7 @@ int main(int arg)
 	{
 		cout << "Error during SDL_GL_CreateContext: " << SDL_GetError() << endl;
 		SDL_Delay(250);
-		//Mix_Quit();
+		Mix_Quit();
 		SDL_Quit();
 		return -1;
 	}
@@ -271,7 +131,7 @@ int main(int arg)
 		{
 			cout << "Error during initiation of GLEW: " << glewGetErrorString(glewError) << endl;
 			SDL_Delay(115000);
-			//Mix_Quit();
+			Mix_Quit();
 			SDL_Quit();
 			return -1;
 		}
@@ -282,11 +142,18 @@ int main(int arg)
 			SDL_Delay(25);
 		}
 
+		if (SDL_GL_MakeCurrent(window, gContext) < 0)
+		{
+			cout << "Warning! Unable to set current of GL. SDL2 Error: " << SDL_GetError() << endl;
+			SDL_Delay(25);
+
+		}
+
 		if (!initGL())
 		{
 			cout << "Error while initializing OpenGL." << endl;
 			SDL_Delay(115000);
-			//Mix_Quit();
+			Mix_Quit();
 			SDL_Quit();
 			return -1;
 		}
@@ -300,81 +167,9 @@ int main(int arg)
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
 	luaL_enginelibs(L);
-	luaL_eventslibs(L);
-	luaL_sdllibs(L);
 
 	std::filesystem::path initlua = luapath.string() + "/init.luau";
-
-	if (!filesystem::exists(initlua))
-	{
-		for (auto scriptfile = filesystem::recursive_directory_iterator(luapath); scriptfile != filesystem::recursive_directory_iterator(); scriptfile++)
-		{
-			std::string std_extension = scriptfile->path().filename().extension().string();
-
-			if (scriptfile->is_regular_file() && (std_extension == ".lua" || std_extension == ".luau"))
-			{
-				std::string text = readFile(scriptfile->path());
-				const char* chartext = text.c_str();
-
-				if (chartext[0] != '\0')
-				{
-
-					size_t outsize;
-					std::string filename = scriptfile->path().filename().string();
-					char* script = luau_compile(chartext, strlen(chartext), nullptr, &outsize);
-
-					if (outsize > 0)
-					{
-						int err = luau_load(L, filename.c_str(), script, outsize, 0);
-						if (err == 1)
-						{
-							cout << lua_tostring(L, -1) << endl;
-							free(script);
-						}
-						else
-						{
-							cout << "Script: " << filename.c_str() << " Loaded" << endl;
-							lua_call(L, 0, 0);
-						}
-					}
-
-
-				}
-			}
-			else
-			{
-				continue;
-			}
-		}
-	}
-	else
-	{
-		std::string text = readFile(initlua);
-		const char* chartext = text.c_str();
-
-		if (chartext[0] != '\0')
-		{
-
-			size_t outsize;
-			std::string filename = initlua.filename().string();
-			char* script = luau_compile(chartext, strlen(chartext), nullptr, &outsize);
-
-			if (outsize > 0)
-			{
-				int err = luau_load(L, filename.c_str(), script, outsize, 0);
-				if (err == 1)
-				{
-					cout << lua_tostring(L, -1) << endl;
-					free(script);
-				}
-				else
-				{
-					cout << "Script: " << filename.c_str() << " Loaded" << endl;
-					lua_call(L, 0, 0);
-				}
-			}
-		}
-	}
+	loadLuaFolder(L, initlua, luapath);
 
 	//
 	//	Sprite Allocation
@@ -411,7 +206,7 @@ int main(int arg)
 			}
 		}
 		
-		render();
+		renderGL(window);
 		SDL_GL_SwapWindow(window);
 
 		// Lua
@@ -423,7 +218,7 @@ int main(int arg)
 			lua_close(L);
 
 			SDL_DestroyWindow(window);
-			//Mix_Quit();
+			Mix_Quit();
 			SDL_Quit();
 			return 0;
 		}

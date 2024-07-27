@@ -26,24 +26,19 @@ public:
 			Mode = GL_RGBA;
 		}
 
-		glTexImage2D(GL_TEXTURE_2D, 0, Mode, Surface->w, Surface->h, 0, Mode, GL_UNSIGNED_BYTE, Surface->pixels);
-
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		Surface = nullptr;
+		glTexImage2D(GL_TEXTURE_2D, 0, Mode, Surface->w, Surface->h, 0, Mode, GL_UNSIGNED_BYTE, Surface->pixels);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		free(Surface);
 	}
 
-	void render(int x, int y, int width, int height)
+	void bind()
 	{
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, TextureID);
-
-		glBegin(GL_QUADS);
-			glTexCoord2f(0, 0); glVertex3f(x,			y,			0);
-			glTexCoord2f(1, 0); glVertex3f(x + width,	y,			0);
-			glTexCoord2f(1, 0); glVertex3f(x + width,	y + height, 0);
-			glTexCoord2f(0, 1); glVertex3f(x,			y + height, 0);
-		glEnd();
 	}
 
 	void flush()

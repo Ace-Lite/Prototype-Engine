@@ -86,7 +86,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\Git-Projects\PrototypeEngine\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>
       </EntryPointSymbol>
@@ -107,7 +107,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\Git-Projects\PrototypeEngine\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>
       </EntryPointSymbol>
@@ -119,7 +119,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\Git-Projects\PrototypeEngine\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>
       </EntryPointSymbol>
@@ -131,7 +131,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;OpenGL32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\Git-Projects\PrototypeEngine\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>
       </EntryPointSymbol>
@@ -147,6 +147,8 @@
     <ClCompile Include="ConstantFolding.cpp" />
     <ClCompile Include="CostModel.cpp" />
     <ClCompile Include="ease.cpp" />
+    <ClCompile Include="gl_init.cpp" />
+    <ClCompile Include="gl_shader.cpp" />
     <ClCompile Include="lcode.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="Location.cpp" />
@@ -192,7 +194,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="entities.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="gl_sprite.cpp" />
+    <ClCompile Include="e_filesys.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TableShape.cpp" />
     <ClCompile Include="tiles.cpp" />
@@ -219,6 +222,10 @@
     <ClInclude Include="Builtins.h" />
     <ClInclude Include="ConstantFolding.h" />
     <ClInclude Include="CostModel.h" />
+    <ClInclude Include="e_filepaths.h" />
+    <ClInclude Include="e_filesys.h" />
+    <ClInclude Include="gl_init.h" />
+    <ClInclude Include="gl_shader.h" />
     <ClInclude Include="luau\lapi.h" />
     <ClInclude Include="luau\lbuffer.h" />
     <ClInclude Include="luau\lbuiltins.h" />
@@ -239,10 +246,17 @@
     <ClInclude Include="luau\lvm.h" />
     <ClInclude Include="lua_api.h" />
     <ClInclude Include="lua_events.h" />
+    <ClInclude Include="lua_render.h" />
     <ClInclude Include="lua_sdl.h" />
-    <ClInclude Include="r_glmain.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="ValueTracking.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x64\Debug\data\shaders\main.frag" />
+    <None Include="x64\Debug\data\shaders\main.vert" />
+    <None Include="x64\Debug\scripts\testdrive.luau">
+      <FileType>Text</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

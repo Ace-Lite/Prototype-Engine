@@ -40,6 +40,18 @@
     <Filter Include="Source Files\MATH">
       <UniqueIdentifier>{b0f6d0fc-d01a-4fe3-bba7-3655d1f904cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ENGINE">
+      <UniqueIdentifier>{8e128926-28ce-4726-a086-d55ff995b290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ENGINE">
+      <UniqueIdentifier>{5dbcf15e-5874-40d6-b709-18e31277bed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\SHADERS">
+      <UniqueIdentifier>{cdd3e49a-ebc5-44e6-a19e-04a096ccde67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\LUAU">
+      <UniqueIdentifier>{642dff96-c375-4727-9902-7e088f38a90b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -222,7 +234,16 @@
     <ClCompile Include="ease.cpp">
       <Filter>Source Files\MATH</Filter>
     </ClCompile>
-    <ClCompile Include="sprite.cpp">
+    <ClCompile Include="gl_sprite.cpp">
+      <Filter>Source Files\RENDER</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_init.cpp">
+      <Filter>Source Files\RENDER</Filter>
+    </ClCompile>
+    <ClCompile Include="e_filesys.cpp">
+      <Filter>Source Files\ENGINE</Filter>
+    </ClCompile>
+    <ClCompile Include="gl_shader.cpp">
       <Filter>Source Files\RENDER</Filter>
     </ClCompile>
   </ItemGroup>
@@ -344,14 +365,37 @@
     <ClInclude Include="..\include\GL\wglew.h">
       <Filter>Header Files\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="r_glmain.h">
-      <Filter>Header Files\RENDER</Filter>
-    </ClInclude>
     <ClInclude Include="lua_events.h">
       <Filter>Header Files\LUAU_API</Filter>
     </ClInclude>
     <ClInclude Include="lua_sdl.h">
       <Filter>Header Files\LUAU_API</Filter>
     </ClInclude>
+    <ClInclude Include="e_filesys.h">
+      <Filter>Header Files\ENGINE</Filter>
+    </ClInclude>
+    <ClInclude Include="e_filepaths.h">
+      <Filter>Header Files\ENGINE</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_init.h">
+      <Filter>Header Files\RENDER</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_shader.h">
+      <Filter>Header Files\RENDER</Filter>
+    </ClInclude>
+    <ClInclude Include="lua_render.h">
+      <Filter>Header Files\LUAU_API</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="x64\Debug\scripts\testdrive.luau">
+      <Filter>Resource Files\LUAU</Filter>
+    </None>
+    <None Include="x64\Debug\data\shaders\main.frag">
+      <Filter>Resource Files\SHADERS</Filter>
+    </None>
+    <None Include="x64\Debug\data\shaders\main.vert">
+      <Filter>Resource Files\SHADERS</Filter>
+    </None>
   </ItemGroup>
 </Project>

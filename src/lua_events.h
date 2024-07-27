@@ -9,6 +9,3 @@ LUALIB_API int enginelua_events(lua_State* L);
 void events_keydown_press(lua_State* L, std::string key_event);
 void events_keyup_press(lua_State* L, std::string key_event);
 void events_thinkframe(lua_State* L);
-
-
-void luaL_eventslibs(lua_State* L);

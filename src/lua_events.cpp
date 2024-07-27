@@ -30,6 +30,7 @@ class keydown : public luau_event
 			{
 				cout << "Activate " << event_func << endl;
 			}
+
 			lua_unref(L, event_func);
 			event_func = store;
 		}
@@ -73,7 +74,6 @@ public:
 
 		if (lua_pcall(L, 0, 0, 0) != LUA_OK) {
 			cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
-			lua_pop(L, 1);
 		}
 
 		lua_unref(L, event_func);
@@ -161,6 +161,7 @@ static const luaL_Reg engineevents_funcs[] = {
 
 int enginelua_events(lua_State* L)
 {
+	lua_pushvalue(L, LUA_GLOBALSINDEX);
 	luaL_register(L, LUA_ENGINEEVENTS, engineevents_funcs);
 	return 1;
 }

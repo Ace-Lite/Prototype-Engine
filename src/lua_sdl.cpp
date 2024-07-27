@@ -21,6 +21,7 @@ static const luaL_Reg enginesdl_funcs[] = {
 
 int enginelua_sdl(lua_State* L)
 {
+	lua_pushvalue(L, LUA_GLOBALSINDEX);
 	luaL_register(L, LUA_ENGINESDL, enginesdl_funcs);
 	return 1;
 }

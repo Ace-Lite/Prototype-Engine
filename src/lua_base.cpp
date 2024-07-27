@@ -36,6 +36,7 @@ static int deltaTime()
 
 static int engine_deltatime(lua_State* L)
 {
+    lua_settop(L, -1);
     lua_pushnumber(L, deltaTime());
     lua_pop(L, 1); // pop result
     return 0;
@@ -61,6 +62,7 @@ static const luaL_Reg enginebase_funcs[] = {
 
 int enginelua_base(lua_State* L)
 {
+    lua_pushvalue(L, LUA_GLOBALSINDEX);
     luaL_register(L, "base", enginebase_funcs);
     return 1;
 }

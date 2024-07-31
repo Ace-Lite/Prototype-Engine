@@ -33,38 +33,45 @@ std::string readFile(filesystem::path path)
 	return result;
 }
 
-static void loadLua(lua_State* L, filesystem::path path)
+void loadLuaString(lua_State* L, const char* name, const char* stringscript)
+{
+	size_t outsize;
+	char* script = luau_compile(stringscript, strlen(stringscript), nullptr, &outsize);
+
+	lua_State* thread = lua_newthread(L);
+	luaL_sandboxthread(thread);
+
+	if (outsize > 0)
+	{
+		int err = luau_load(thread, name, script, outsize, 0);
+		free(script);
+		if (err == 1)
+		{
+			cout << lua_tostring(thread, -1) << endl;
+			lua_resetthread(thread);
+		}
+		else
+		{
+			cout << "Script: " << name << " is Loaded" << endl;
+			lua_resume(thread, NULL, 0);
+		}
+	}
+}
+
+static void loadLuaFile(lua_State* L, filesystem::path path)
 {
 	std::string strtext = readFile(path);
 	const char* text = strtext.c_str();
 
 	if (text[0] != '\0')
 	{
-		size_t outsize;
 		std::string filename = path.filename().string();
-		char* script = luau_compile(text, strlen(text), nullptr, &outsize);
-
-		if (outsize > 0)
-		{
-			int err = luau_load(L, filename.c_str(), script, outsize, 0);
-			if (err == 1)
-			{
-				cout << lua_tostring(L, -1) << endl;
-				free(script);
-			}
-			else
-			{
-				cout << "Script: " << filename.c_str() << " is Loading" << endl;
-				if (lua_pcall(L, 0, LUA_MULTRET, lua_gettop(L) - 1))
-				{
-					cout << "Luau Warning:" << lua_tostring(L, -1) << endl;
-					lua_pop(L, 1);
-				}
-			}
-		}
+		loadLuaString(L, filename.c_str(), text);
 	}
 }
 
+
+int searchscripts = 0;
 
 void loadLuaFolder(lua_State* L, filesystem::path initpath, filesystem::path path)
 {
@@ -75,14 +82,18 @@ void loadLuaFolder(lua_State* L, filesystem::path initpath, filesystem::path pat
 			std::string std_extension = scriptfile->path().filename().extension().string();
 
 			if (scriptfile->is_regular_file() && (std_extension == ".lua" || std_extension == ".luau"))
-				loadLua(L, scriptfile->path());
+				loadLuaFile(L, scriptfile->path());
 			else
 				continue;
+
+			++searchscripts;
 		}
+
+		cout << "found lua scripts: " << searchscripts << endl;
 	}
 	else
 	{
-		loadLua(L, initpath);
+		loadLuaFile(L, initpath);
 	}
 }
 

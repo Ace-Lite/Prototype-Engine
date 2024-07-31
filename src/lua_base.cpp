@@ -64,5 +64,6 @@ int enginelua_base(lua_State* L)
 {
     lua_pushvalue(L, LUA_GLOBALSINDEX);
     luaL_register(L, "base", enginebase_funcs);
+    lua_pop(L, 1);
     return 1;
 }

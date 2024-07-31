@@ -11,6 +11,7 @@ using namespace std;
 
 static int gl_createShader(lua_State* L)
 {
+    lua_pop(L, 1);
     return 0;
 }
 
@@ -23,5 +24,6 @@ int enginelua_gl(lua_State* L)
 {
     lua_pushvalue(L, LUA_GLOBALSINDEX);
     luaL_register(L, "gl", enginegl_funcs);
+    lua_pop(L, 1);
     return 1;
 }

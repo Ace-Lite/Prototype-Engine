@@ -397,5 +397,8 @@
     <None Include="x64\Debug\data\shaders\main.vert">
       <Filter>Resource Files\SHADERS</Filter>
     </None>
+    <None Include="globals.luau">
+      <Filter>Resource Files\LUAU</Filter>
+    </None>
   </ItemGroup>
 </Project>

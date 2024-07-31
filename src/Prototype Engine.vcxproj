@@ -252,6 +252,9 @@
     <ClInclude Include="ValueTracking.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="globals.luau">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="x64\Debug\data\shaders\main.frag" />
     <None Include="x64\Debug\data\shaders\main.vert" />
     <None Include="x64\Debug\scripts\testdrive.luau">

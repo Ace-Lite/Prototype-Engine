@@ -6,6 +6,16 @@
 #include <iostream>
 using namespace std;
 
+static void retrFunction(lua_State* L, int* id)
+{
+	cout << lua_gettop(L) << endl;
+
+	int i = lua_getref(L, *id);
+	*id = lua_ref(L, i);
+
+	cout << lua_gettop(L) << endl;
+}
+
 class luau_event
 {
 	public:
@@ -18,9 +28,8 @@ class keydown : public luau_event
 
 		void callFunc(lua_State* L, string key_down)
 		{
-			lua_getref(L, event_func);
-			int store = lua_ref(L, -1);
-			
+			retrFunction(L, &event_func);
+
 			lua_pushstring(L, key_down.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
 				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
@@ -30,9 +39,6 @@ class keydown : public luau_event
 			{
 				cout << "Activate " << event_func << endl;
 			}
-
-			lua_unref(L, event_func);
-			event_func = store;
 		}
 };
 
@@ -44,8 +50,7 @@ class keyup : public luau_event
 
 		void callFunc(lua_State* L, string key_up)
 		{
-			lua_getref(L, event_func);
-			int store = lua_ref(L, -1);
+			retrFunction(L, &event_func);
 
 			lua_pushstring(L, key_up.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
@@ -56,8 +61,6 @@ class keyup : public luau_event
 			{
 				cout << "Activate " << event_func << endl;
 			}
-			lua_unref(L, event_func);
-			event_func = store;
 		}
 };
 
@@ -69,19 +72,17 @@ public:
 
 	void callFunc(lua_State* L)
 	{
-		lua_getref(L, event_func);
-		int store = lua_ref(L, -1);
+		retrFunction(L, &event_func);
 
 		if (lua_pcall(L, 0, 0, 0) != LUA_OK) {
 			cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
+			lua_pop(L, 1);
 		}
-
-		lua_unref(L, event_func);
-		event_func = store;
 	}
 };
 
 vector<thinkframe*> thinkframe_events;
+
 
 // TODO: make name upper/lower case, no need to be case sensitive here.
 static int createEvent(lua_State* L)
@@ -90,67 +91,74 @@ static int createEvent(lua_State* L)
 	string name = constchname;
 
 	luaL_checktype(L, 2, LUA_TFUNCTION);
-	int ref_int = lua_ref(L, 2);
+	int id = lua_ref(L, 2);
 
-	lua_rawseti(L, LUA_REGISTRYINDEX, ref_int);
-	
 	if (name == "keyDown" || name == "keydown")
 	{
 		keydown newevent;
-		newevent.event_func = ref_int;
+		newevent.event_func = id;
 		keydown_events.push_back(&newevent);
 	}
 	else if (name == "keyUp" || name == "keyup")
 	{
 		keyup newevent;
-		newevent.event_func = ref_int;
+		newevent.event_func = id;
 		keyup_events.push_back(&newevent);
 	}
 	else if (name == "thinkFrame")
 	{
 		thinkframe newevent;
-		newevent.event_func = ref_int;
+		newevent.event_func = id;
 		thinkframe_events.push_back(&newevent);
 	}
-	else if (name == "scriptLoad")
-	{
-		lua_pcall(L, 1, 0, 0);
-		lua_unref(L, ref_int);
-	}
 
-	lua_pop(L, 1);
 	return 0;
 }
 
 void events_keydown_press(lua_State* L, std::string key_event)
 {
+	if (lua_gettop(L) > 0)
+		lua_pop(L, -1);
+
 	if (keydown_events.empty())
 		cout << "No Keydown Events" << endl;
 	else
+	{
 		for (auto it = keydown_events.begin(); it != keydown_events.end(); ++it)
 		{
 			(*it)->callFunc(L, key_event);
 		}
+	}
 }
 
 void events_keyup_press(lua_State* L, std::string key_event)
 {
+	if (lua_gettop(L) > 0)
+		lua_pop(L, -1);
+
 	if (keyup_events.empty())
 		cout << "No Keyup Events" << endl;
 	else
+	{
 		for (auto it = keyup_events.begin(); it != keyup_events.end(); ++it)
 		{
 			(*it)->callFunc(L, key_event);
 		}
+	}
 }
 
 void events_thinkframe(lua_State* L)
 {
+	if (lua_gettop(L) > 0)
+		lua_pop(L, -1);
+
 	if (!thinkframe_events.empty())
+	{
 		for (auto it = thinkframe_events.begin(); it != thinkframe_events.end(); ++it)
 		{
 			(*it)->callFunc(L);
 		}
+	}
 }
 
 
@@ -163,5 +171,6 @@ int enginelua_events(lua_State* L)
 {
 	lua_pushvalue(L, LUA_GLOBALSINDEX);
 	luaL_register(L, LUA_ENGINEEVENTS, engineevents_funcs);
+	lua_pop(L, 1);
 	return 1;
 }

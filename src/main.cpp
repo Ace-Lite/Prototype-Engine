@@ -32,6 +32,7 @@
 #include "e_filesys.h"
 
 SDL_GLContext gContext;
+extern lua_State* L;
 
 bool gRenderQuad = true;
 
@@ -160,21 +161,9 @@ int main(int arg)
 
 	}
 
-	//
-	//	Luau API
-	//
-
-	lua_State* L = luaL_newstate();
-	luaL_openlibs(L);
-	luaL_enginelibs(L);
-
+	startLua();
 	std::filesystem::path initlua = luapath.string() + "/init.luau";
 	loadLuaFolder(L, initlua, luapath);
-
-	//
-	//	Sprite Allocation
-	//
-
 
 	//
 	//	Events
@@ -190,6 +179,7 @@ int main(int arg)
 				quit = true;
 				break;
 			case SDL_KEYDOWN:
+				cout << lua_gettop(L) << endl;
 				events_keydown_press(L, SDL_GetKeyName(e.key.keysym.sym));
 				break;
 			case SDL_KEYUP:
@@ -201,16 +191,21 @@ int main(int arg)
 			case SDL_MOUSEMOTION:
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
+				break;
+
+			// reset
 			default:
+				//events_keydown_press(L, "NULL");
+				//events_keyup_press(L, "NULL");
+				//events_quit(L, quit);
 				break;
 			}
 		}
-		
+
+		events_thinkframe(L);
+
 		renderGL(window);
 		SDL_GL_SwapWindow(window);
-
-		// Lua
-		events_thinkframe(L);
 
 		if (quit == true)
 		{
@@ -223,10 +218,6 @@ int main(int arg)
 			return 0;
 		}
 	}
-
-
-
-
 
 	return 0;
 }

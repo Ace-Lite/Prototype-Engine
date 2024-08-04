@@ -4,7 +4,7 @@
 #include <fstream>
 #include <set>
 
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 #define SDL_MAIN_HANDLED 1
 #define GLEW_STATIC
 
@@ -49,8 +49,8 @@ int main(int arg)
 
 	string filepath = SDL_GetBasePath();
 
-	std::filesystem::path luapath = filepath + "/scripts";
-	std::filesystem::path datapath = filepath + "/data";
+	std::filesystem::path luapath = filepath + "scripts";
+	std::filesystem::path datapath = filepath + "data";
 
 	if (!filesystem::exists(luapath))
 	{

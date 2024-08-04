@@ -54,9 +54,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="luau\lapi.cpp">
       <Filter>Source Files\LUAU</Filter>
     </ClCompile>
@@ -246,6 +243,9 @@
     <ClCompile Include="gl_shader.cpp">
       <Filter>Source Files\RENDER</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="luau\lapi.h">
@@ -386,18 +386,18 @@
     <ClInclude Include="lua_render.h">
       <Filter>Header Files\LUAU_API</Filter>
     </ClInclude>
+    <ClInclude Include="e_fps.h">
+      <Filter>Header Files\ENGINE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="x64\Debug\scripts\testdrive.luau">
-      <Filter>Resource Files\LUAU</Filter>
-    </None>
     <None Include="x64\Debug\data\shaders\main.frag">
       <Filter>Resource Files\SHADERS</Filter>
     </None>
     <None Include="x64\Debug\data\shaders\main.vert">
       <Filter>Resource Files\SHADERS</Filter>
     </None>
-    <None Include="globals.luau">
+    <None Include="..\bin\scripts\testdrive.luau">
       <Filter>Resource Files\LUAU</Filter>
     </None>
   </ItemGroup>

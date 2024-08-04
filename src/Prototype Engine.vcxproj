@@ -261,18 +261,14 @@
     <ClInclude Include="lua_events.h" />
     <ClInclude Include="lua_render.h" />
     <ClInclude Include="lua_sdl.h" />
+    <ClInclude Include="e_fps.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="ValueTracking.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="globals.luau">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
+    <None Include="..\bin\scripts\testdrive.luau" />
     <None Include="x64\Debug\data\shaders\main.frag" />
     <None Include="x64\Debug\data\shaders\main.vert" />
-    <None Include="x64\Debug\scripts\testdrive.luau">
-      <FileType>Text</FileType>
-    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

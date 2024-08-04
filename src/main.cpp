@@ -28,8 +28,9 @@
 
 #include "gl_init.h"
 
-// File loader
+// Engine Headers
 #include "e_filesys.h"
+#include "e_fps.h"
 
 SDL_GLContext gContext;
 extern lua_State* L;
@@ -40,6 +41,9 @@ using namespace std;
 
 const int WIN_WIDTH = 400;
 const int WIN_HEIGHT = 400;
+
+float deltaTime = 0;
+float FPS = 0;
 
 int main(int arg)
 {
@@ -80,7 +84,7 @@ int main(int arg)
 
 	SDL_Window* window = nullptr;
 	SDL_Surface* surface = nullptr;
-	SDL_Renderer* renderer = nullptr;
+	//SDL_Renderer* renderer = nullptr;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		cout << "Error during SDL_Init: " << SDL_GetError() << endl;
@@ -108,14 +112,14 @@ int main(int arg)
 	// GL Renderer Setup
 	//
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	//renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 	gContext = SDL_GL_CreateContext(window);
 
-	if (gContext == NULL)
+	if (gContext == nullptr)
 	{
 		cout << "Error during SDL_GL_CreateContext: " << SDL_GetError() << endl;
 		SDL_Delay(250);
@@ -162,7 +166,7 @@ int main(int arg)
 	}
 
 	startLua();
-	std::filesystem::path initlua = luapath.string() + "/init.luau";
+	std::filesystem::path initlua = filepath + "scripts\\init.luau";
 	loadLuaFolder(L, initlua, luapath);
 
 	//
@@ -172,6 +176,10 @@ int main(int arg)
 	SDL_Event e;
 	bool quit = false;
 	while (quit == false) {
+
+		Uint32 startOfTick = SDL_GetTicks();
+		Uint64 startOfFrame = SDL_GetPerformanceCounter();
+
 		while (SDL_PollEvent(&e)) {
 			switch (e.type) {
 		
@@ -179,7 +187,7 @@ int main(int arg)
 				quit = true;
 				break;
 			case SDL_KEYDOWN:
-				cout << lua_gettop(L) << endl;
+				//cout << lua_gettop(L) << endl;
 				events_keydown_press(L, SDL_GetKeyName(e.key.keysym.sym));
 				break;
 			case SDL_KEYUP:
@@ -202,15 +210,20 @@ int main(int arg)
 			}
 		}
 
-		events_thinkframe(L);
-
+		events_thinkframe(L, deltaTime);
 		renderGL(window);
+
 		SDL_GL_SwapWindow(window);
+
+		Uint32 endOfTick = SDL_GetTicks();
+		Uint64 endOfFrame = SDL_GetPerformanceCounter();
+		FPS = 1.0f / ((endOfFrame - startOfFrame) / (float)SDL_GetPerformanceFrequency());
+		deltaTime = (endOfTick - startOfTick) / 1000.0f;
 
 		if (quit == true)
 		{
 			// Close Lua for apperant reasons
-			lua_close(L);
+			shutdownLua(L);
 
 			SDL_DestroyWindow(window);
 			Mix_Quit();

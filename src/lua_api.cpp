@@ -52,3 +52,8 @@ void startLua()
 }
 
 
+void shutdownLua(lua_State* L)
+{
+    events_clean(L);
+    lua_close(L);
+}

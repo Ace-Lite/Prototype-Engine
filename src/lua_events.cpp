@@ -3,18 +3,9 @@
 #include "lua_events.h"
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <iostream>
 using namespace std;
-
-static void retrFunction(lua_State* L, int* id)
-{
-	cout << lua_gettop(L) << endl;
-
-	int i = lua_getref(L, *id);
-	*id = lua_ref(L, i);
-
-	cout << lua_gettop(L) << endl;
-}
 
 class luau_event
 {
@@ -28,17 +19,17 @@ class keydown : public luau_event
 
 		void callFunc(lua_State* L, string key_down)
 		{
-			retrFunction(L, &event_func);
+			lua_getref(L, event_func);
 
 			lua_pushstring(L, key_down.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
 				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 				lua_pop(L, 1);
 			}
-			else
-			{
-				cout << "Activate " << event_func << endl;
-			}
+			//else
+			//{
+			//	cout << "Activate " << event_func << endl;
+			//}
 		}
 };
 
@@ -50,17 +41,17 @@ class keyup : public luau_event
 
 		void callFunc(lua_State* L, string key_up)
 		{
-			retrFunction(L, &event_func);
+			lua_getref(L, event_func);
 
 			lua_pushstring(L, key_up.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
 				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 				lua_pop(L, 1);
 			}
-			else
-			{
-				cout << "Activate " << event_func << endl;
-			}
+			//else
+			//{
+			//	cout << "Activate " << event_func << endl;
+			//}
 		}
 };
 
@@ -70,11 +61,12 @@ class thinkframe : public luau_event
 {
 public:
 
-	void callFunc(lua_State* L)
+	void callFunc(lua_State* L, float deltaTime)
 	{
-		retrFunction(L, &event_func);
+		lua_getref(L, event_func);
 
-		if (lua_pcall(L, 0, 0, 0) != LUA_OK) {
+		lua_pushnumber(L, deltaTime);
+		if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
 			cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 			lua_pop(L, 1);
 		}
@@ -83,33 +75,37 @@ public:
 
 vector<thinkframe*> thinkframe_events;
 
-
-// TODO: make name upper/lower case, no need to be case sensitive here.
 static int createEvent(lua_State* L)
 {
 	const char* constchname = luaL_checkstring(L, 1);
-	string name = constchname;
+	string eventname = constchname;
+
+	// lowercasing name string
+	for (auto& c : eventname)
+	{
+		c = tolower(c);
+	}
 
 	luaL_checktype(L, 2, LUA_TFUNCTION);
 	int id = lua_ref(L, 2);
 
-	if (name == "keyDown" || name == "keydown")
+	if (eventname == "keydown")
 	{
-		keydown newevent;
-		newevent.event_func = id;
-		keydown_events.push_back(&newevent);
+		keydown *newevent = new keydown;
+		newevent->event_func = id;
+		keydown_events.push_back(newevent);
 	}
-	else if (name == "keyUp" || name == "keyup")
+	else if (eventname == "keyup")
 	{
-		keyup newevent;
-		newevent.event_func = id;
-		keyup_events.push_back(&newevent);
+		keyup *newevent = new keyup;
+		newevent->event_func = id;
+		keyup_events.push_back(newevent);
 	}
-	else if (name == "thinkFrame")
+	else if (eventname == "thinkframe")
 	{
-		thinkframe newevent;
-		newevent.event_func = id;
-		thinkframe_events.push_back(&newevent);
+		thinkframe *newevent = new thinkframe;
+		newevent->event_func = id;
+		thinkframe_events.push_back(newevent);
 	}
 
 	return 0;
@@ -147,7 +143,7 @@ void events_keyup_press(lua_State* L, std::string key_event)
 	}
 }
 
-void events_thinkframe(lua_State* L)
+void events_thinkframe(lua_State* L, float deltaTime)
 {
 	if (lua_gettop(L) > 0)
 		lua_pop(L, -1);
@@ -156,8 +152,27 @@ void events_thinkframe(lua_State* L)
 	{
 		for (auto it = thinkframe_events.begin(); it != thinkframe_events.end(); ++it)
 		{
-			(*it)->callFunc(L);
+			(*it)->callFunc(L, deltaTime);
 		}
+	}
+}
+
+// This could just be deconstructor but uhh... Current lua design simply is 
+void events_clean(lua_State* L)
+{
+	for (auto it = keydown_events.begin(); it != keydown_events.end(); ++it)
+	{
+		lua_unref(L, (*it)->event_func);
+	}
+
+	for (auto it = keyup_events.begin(); it != keyup_events.end(); ++it)
+	{
+		lua_unref(L, (*it)->event_func);
+	}
+
+	for (auto it = thinkframe_events.begin(); it != thinkframe_events.end(); ++it)
+	{
+		lua_unref(L, (*it)->event_func);
 	}
 }
 

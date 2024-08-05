@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Source Files\LUAU">
-      <UniqueIdentifier>{1e8df0bb-4021-4842-a7cc-2442aba2fd89}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\LUAU">
       <UniqueIdentifier>{f29d1f0c-6176-48f6-97d6-ef80a984a0e4}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,12 @@
     </Filter>
     <Filter Include="Resource Files\LUAU">
       <UniqueIdentifier>{642dff96-c375-4727-9902-7e088f38a90b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LUAU">
+      <UniqueIdentifier>{1e8df0bb-4021-4842-a7cc-2442aba2fd89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\WORLD">
+      <UniqueIdentifier>{7cf17135-234c-4738-ac24-8d3f01a3defb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -377,10 +380,10 @@
     <ClInclude Include="e_filepaths.h">
       <Filter>Header Files\ENGINE</Filter>
     </ClInclude>
-    <ClInclude Include="gl_init.h">
+    <ClInclude Include="gl_init.hpp">
       <Filter>Header Files\RENDER</Filter>
     </ClInclude>
-    <ClInclude Include="gl_shader.h">
+    <ClInclude Include="gl_shader.hpp">
       <Filter>Header Files\RENDER</Filter>
     </ClInclude>
     <ClInclude Include="lua_render.h">
@@ -389,16 +392,22 @@
     <ClInclude Include="e_fps.h">
       <Filter>Header Files\ENGINE</Filter>
     </ClInclude>
+    <ClInclude Include="entities.hpp">
+      <Filter>Header Files\WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_sprite.hpp">
+      <Filter>Header Files\RENDER</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="x64\Debug\data\shaders\main.frag">
-      <Filter>Resource Files\SHADERS</Filter>
-    </None>
-    <None Include="x64\Debug\data\shaders\main.vert">
-      <Filter>Resource Files\SHADERS</Filter>
-    </None>
     <None Include="..\bin\scripts\testdrive.luau">
       <Filter>Resource Files\LUAU</Filter>
+    </None>
+    <None Include="..\bin\data\shaders\main.frag">
+      <Filter>Resource Files\SHADERS</Filter>
+    </None>
+    <None Include="..\bin\data\shaders\main.vert">
+      <Filter>Resource Files\SHADERS</Filter>
     </None>
   </ItemGroup>
 </Project>

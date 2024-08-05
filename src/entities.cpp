@@ -1,5 +1,11 @@
 #include <iostream>
 #include <vector>
+#include "entities.hpp"
+
+#include "gl_init.hpp"
+#include "gl_shader.hpp"
+#include "gl_sprite.hpp"
+#include "gl/glew.h"
 using namespace std;
 
 // SKYDUSK: 24/07/2024
@@ -15,101 +21,118 @@ using namespace std;
 #define GF_COLLISION	1 << 0
 #define GF_GRAVITY		1 << 1
 
-// Not sure what to do here, I would have to wait for rendering first anyway
-// I do not want to repeat DOOM situation where states are tied to animations.
-// TODO: Discuss this
-class Animation 
-{
-public:
-	int lenght;
-	vector<int*> frames;
-};
-
-class Entity // Entity without any logic (meant to be controlled by something else)
-{
-	public:
-		// NOTE: Feel free to change these into Vector3 values.
-		float x, y, z; // Z should be used for 3D in case we went that direction 
-		float depth; // Depth in 2D for 3D objects
-
-		float jaw, pitch, roll; // For 3D objects in both modes. (pitch for 2D sprites) and sprite flipping
-		float scale_x, scale_y, scale_z; // scales (Z 3D only)
-
-		bool visible = false; // Mostly for 2D, could possibly be used for 3D culling.
-		
-		float alpha;
-
-		int blockmap; // Chunk position
-
-		// Visuals
-		Animation anim_data;
-};
-
 // Used for definitions
 vector<int*> definitions;
-
-class Object : public Entity // Entity with gamelogic
-{
-public:
-	int physics_flags = 0;
-	float gravity_scale = 1.0f;
-
-
-	// Object relations
-	Object *target;
-	vector<Object*>sub_objects; // thinking objects
-	vector<Entity*>parts; // objects manipulated by object
-
-	// Lua_data
-	int definition_id; // this one is merely selection
-	int embscript;
-	int table;
-};
-
 vector<Object*> object_list;
+vector<Entity*> entity_list;
 
 // prototype blockmap, refactor when world is made.
 static vector<vector<Object*>> blockmap; //this setup is ridiculous.
 
-class EntityManager
+static GLuint incideQuad[] = { 0, 1, 2, 2, 3, 0 };
+extern Sprite* errorSprite;
+
+Object* EntityManager::createObject()
 {
-	public:
-		void create()
+	Object *obj = new Object;
+	object_list.push_back(obj);
+	entity_list.push_back(obj);
+
+	return obj;
+}
+
+Entity* EntityManager::createEntity()
+{
+	Entity* ent = new Entity;
+	entity_list.push_back(ent); // probably not best solution, probably achives object slicing
+		
+	return ent;
+}
+
+void EntityManager::clear()
+{		
+	auto itr = entity_list.begin();
+	while (itr != entity_list.end())
+	{
+		itr = entity_list.erase(itr);
+		++itr;
+	}
+
+	object_list.clear();
+	entity_list.clear();
+}
+
+void EntityManager::iter_think()
+{
+	if (!object_list.empty()) // merely making sure to have no memory leaks
+	{
+		for (auto it = object_list.begin(); it != object_list.end(); ++it)
 		{
-			Object obj;
-			object_list.push_back(&obj); // probably not best solution, probably achives object slicing
+
+			if ((*it)->physics_flags & GF_GRAVITY)
+				continue;
+
+			// Collision Checks
+			if ((*it)->physics_flags & GF_COLLISION)
+				continue;
+
 		}
+	}
+}
 
+size_t EntityManager::returnCount()
+{
+	return entity_list.size();
+}
 
-		void clear()
+void EntityManager::draw()
+{
+	if (!entity_list.empty()) // merely making sure to have no memory leaks
+	{
+		for (auto it = entity_list.begin(); it != entity_list.end(); ++it)
 		{
-			if (!object_list.empty()) // merely making sure to have no memory leaks
-			{
-				for (auto it = object_list.begin(); it != object_list.end(); ++it)
-				{
-					delete(*it);
-				}
-			}
+			if (!(*it)->sprite)
+				continue;
 
-			object_list.clear();
+			vector3data pos = (*it)->pos;
+			vector3data sca = (*it)->scale;
+
+			float alpha = (*it)->alpha;
+
+			vector2data dim = { 
+				(float)(*it)->sprite->width * sca.x, // width
+				(float)(*it)->sprite->height * sca.y  // height
+			};
+
+			vector2data vector1 = { pos.x			, pos.y			};
+			vector2data vector2 = { pos.x + dim.x	, pos.y			};
+			vector2data vector3 = { pos.x + dim.x	, pos.y + dim.y };
+			vector2data vector4 = { pos.x			, pos.y + dim.y };
+					
+			GLfloat verticles[] = {
+			// coordinates		|	 colors RGBA	| texture coordinates
+			vector1.x, vector1.y, 1.0, 1.0, 1.0, alpha, 0.f, 0.f,
+			vector2.x, vector2.y, 1.0, 1.0, 1.0, alpha, 1.f, 0.f,
+			vector3.x, vector3.y, 1.0, 1.0, 1.0, alpha, 1.f, 1.f,
+			vector4.x, vector4.y, 1.0, 1.0, 1.0, alpha, 0.f, 1.f,
+			};
+
+			// bindings
+			if ((*it)->shader)
+				(*it)->shader->activate();
+			else
+				glUseProgram(0);
+
+			if ((*it)->sprite)
+				(*it)->sprite->bind();
+			else
+				errorSprite->bind();
+
+			// initizing & rendering
+			glBufferData(GL_ARRAY_BUFFER, sizeof(verticles), verticles, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(incideQuad), incideQuad, GL_STATIC_DRAW);
+
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
-
-		void iter_think()
-		{
-			if (!object_list.empty()) // merely making sure to have no memory leaks
-			{
-				for (auto it = object_list.begin(); it != object_list.end(); ++it)
-				{
-
-					if ((*it)->physics_flags & GF_GRAVITY)
-						continue;
-
-					// Collision Checks
-					if ((*it)->physics_flags & GF_COLLISION)
-						continue;
-
-				}
-			}
-		}
-
-};
+	}
+}

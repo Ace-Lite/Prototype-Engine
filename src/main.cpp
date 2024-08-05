@@ -23,10 +23,8 @@
 
 // OpenGL
 #include "gl/glew.h"
-#include "gl_init.h"
+#include "gl_init.hpp"
 #include "SDL_opengl.h"
-
-#include "gl_init.h"
 
 // Engine Headers
 #include "e_filesys.h"
@@ -169,6 +167,9 @@ int main(int arg)
 	std::filesystem::path initlua = filepath + "scripts\\init.luau";
 	loadLuaFolder(L, initlua, luapath);
 
+	GL_loadDefaultContent(datapath.string());
+	GL_test();
+
 	//
 	//	Events
 	//
@@ -211,9 +212,7 @@ int main(int arg)
 		}
 
 		events_thinkframe(L, deltaTime);
-		renderGL(window);
-
-		SDL_GL_SwapWindow(window);
+		GL_rendererRender(window);
 
 		Uint32 endOfTick = SDL_GetTicks();
 		Uint64 endOfFrame = SDL_GetPerformanceCounter();

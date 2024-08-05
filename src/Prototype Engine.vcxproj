@@ -235,10 +235,12 @@
     <ClInclude Include="Builtins.h" />
     <ClInclude Include="ConstantFolding.h" />
     <ClInclude Include="CostModel.h" />
+    <ClInclude Include="entities.hpp" />
     <ClInclude Include="e_filepaths.h" />
     <ClInclude Include="e_filesys.h" />
-    <ClInclude Include="gl_init.h" />
-    <ClInclude Include="gl_shader.h" />
+    <ClInclude Include="gl_init.hpp" />
+    <ClInclude Include="gl_shader.hpp" />
+    <ClInclude Include="gl_sprite.hpp" />
     <ClInclude Include="luau\lapi.h" />
     <ClInclude Include="luau\lbuffer.h" />
     <ClInclude Include="luau\lbuiltins.h" />
@@ -266,9 +268,9 @@
     <ClInclude Include="ValueTracking.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\bin\data\shaders\main.frag" />
+    <None Include="..\bin\data\shaders\main.vert" />
     <None Include="..\bin\scripts\testdrive.luau" />
-    <None Include="x64\Debug\data\shaders\main.frag" />
-    <None Include="x64\Debug\data\shaders\main.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

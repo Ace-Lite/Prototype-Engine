@@ -11,8 +11,7 @@ static int lualib_getWindowSize(lua_State* L)
 {
 	Uint32 tics = SDL_GetTicks64();
 	lua_pushinteger(L, tics);
-	lua_pop(L, 1);
-	return 0;
+	return 1;
 }
 
 static const luaL_Reg enginesdl_funcs[] = {

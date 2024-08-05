@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 // OpenGL
 #include "gl/glew.h"
@@ -11,7 +12,6 @@ class Shader {
 	
 	// Program ID
 	GLuint id_;
-	void compile(const GLchar* vertdata, const GLchar* fragdata);
 public:
 
 	// ... this is werid, why calling a non-function variable is even possible.
@@ -25,6 +25,7 @@ public:
 		id_ = 0;
 	}
 
+	void compile(filesystem::path vertdata, filesystem::path fragdata);
 	void activate();
 
 	// Considering as of right now we don't have vector and matrix datatypes as of my knowledge.

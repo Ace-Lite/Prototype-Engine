@@ -1,15 +1,16 @@
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 // OpenGL
 #include "gl/glew.h"
-#include "gl_shader.h"
+#include "gl_shader.hpp"
 
 #include "e_filesys.h"
 
 using namespace std;
 
-void Shader::compile(const GLchar* vertdata, const GLchar* fragdata)
+void Shader::compile(filesystem::path vertdata, filesystem::path fragdata)
 {
 	GLuint vertexshader, fragmentshader;
 	GLint success = true;
@@ -73,9 +74,12 @@ void Shader::compile(const GLchar* vertdata, const GLchar* fragdata)
 		exit(1);
 	}
 
+	// Porgram
+
 	id_ = glCreateProgram();
 	glAttachShader(id_, vertexshader);
 	glAttachShader(id_, fragmentshader);
+
 	glLinkProgram(id_);
 
 	glGetProgramiv(id_, GL_LINK_STATUS, & success);

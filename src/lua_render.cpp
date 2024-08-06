@@ -3,20 +3,45 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <filesystem>
 #include <time.h>
 #include <SDL.h>
 
 #include "lua_render.h"
+#include "gl_shader.hpp"
+#include "gl_sprite.hpp"
 using namespace std;
 
-static int gl_createShader(lua_State* L)
+static int gl_cacheShader(lua_State* L)
 {
-    lua_pop(L, 1);
+    string filepath = SDL_GetBasePath();
+
+    filesystem::path vectShaderPath = filepath + "\\data\\" + luaL_checkstring(L, 1);
+    filesystem::path fragShaderPath = filepath + "\\data\\" + luaL_checkstring(L, 2);
+
+    Shader* shader = new Shader();
+    shader->compile(vectShaderPath, fragShaderPath);
     return 0;
 }
 
+vector<Sprite*> customSpriteList;
+
+static int gl_cacheSprite(lua_State* L)
+{
+    string filepath = SDL_GetBasePath();
+    string spritePath = filepath + "\\data\\" + luaL_checkstring(L, 1);
+
+    Sprite spriteEntry(&spritePath);
+    customSpriteList.push_back(&spriteEntry);
+
+    lua_pushinteger(L, customSpriteList.size());
+    return 1;
+}
+
 static const luaL_Reg enginegl_funcs[] = {
-    {"createShader", gl_createShader},
+    {"cacheShader", gl_cacheShader},
+    {"cacheSprite", gl_cacheSprite},
+
     {NULL, NULL},
 };
 

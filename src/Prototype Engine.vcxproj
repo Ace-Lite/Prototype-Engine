@@ -202,6 +202,7 @@
     <ClCompile Include="lua_events.cpp" />
     <ClCompile Include="lua_helper.cpp" />
     <ClCompile Include="lua_iodata.cpp" />
+    <ClCompile Include="lua_object.cpp" />
     <ClCompile Include="lua_render.cpp" />
     <ClCompile Include="lua_sdl.cpp" />
     <ClCompile Include="main.cpp" />

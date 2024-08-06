@@ -160,6 +160,8 @@
     <ClCompile Include="ConstantFolding.cpp" />
     <ClCompile Include="CostModel.cpp" />
     <ClCompile Include="ease.cpp" />
+    <ClCompile Include="e_isoworld.cpp" />
+    <ClCompile Include="e_isoworld.hpp" />
     <ClCompile Include="gl_init.cpp" />
     <ClCompile Include="gl_shader.cpp" />
     <ClCompile Include="lcode.cpp" />
@@ -212,7 +214,6 @@
     <ClCompile Include="e_filesys.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TableShape.cpp" />
-    <ClCompile Include="tiles.cpp" />
     <ClCompile Include="TimeTrace.cpp" />
     <ClCompile Include="Types.cpp" />
     <ClCompile Include="ValueTracking.cpp" />

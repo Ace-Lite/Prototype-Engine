@@ -222,9 +222,6 @@
     <ClCompile Include="entities.cpp">
       <Filter>Source Files\WORLD</Filter>
     </ClCompile>
-    <ClCompile Include="tiles.cpp">
-      <Filter>Source Files\WORLD</Filter>
-    </ClCompile>
     <ClCompile Include="lua_helper.cpp">
       <Filter>Source Files\LUAU_API</Filter>
     </ClCompile>
@@ -251,6 +248,12 @@
     </ClCompile>
     <ClCompile Include="lua_object.cpp">
       <Filter>Source Files\LUAU_API</Filter>
+    </ClCompile>
+    <ClCompile Include="e_isoworld.hpp">
+      <Filter>Header Files\ENGINE</Filter>
+    </ClCompile>
+    <ClCompile Include="e_isoworld.cpp">
+      <Filter>Source Files\ENGINE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

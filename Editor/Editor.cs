@@ -15,6 +15,8 @@ namespace Sprite_Model_Editor
         Graphics[] steps = new Graphics[32];
 
         SolidBrush brush;
+
+        Graphics wireframe;
         Graphics plane;
 
         int step_position = 0;
@@ -24,6 +26,8 @@ namespace Sprite_Model_Editor
             InitializeComponent();
             brush = new SolidBrush(Color.Black);
             plane = panel1.CreateGraphics();
+
+            
         }
 
         private void panel1_MouseClick(object sender, MouseEventArgs e)
@@ -49,6 +53,16 @@ namespace Sprite_Model_Editor
             step_position = Math.Min(step_position + 1, steps.Count());
 
             plane = steps[steps.Count() - step_position];
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_Resize(object sender, EventArgs e)
+        {
+
         }
     }
 }

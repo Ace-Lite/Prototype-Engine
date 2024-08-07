@@ -37,7 +37,7 @@ void Shader::compile(std::filesystem::path vertdata, std::filesystem::path fragd
 			exit(1);
 		}
 	}
-	catch (exception e)
+	catch (std::exception e)
 	{
 		std::cerr << "Vertex Shader couldn't be loaded" << std::endl;
 		exit(1);
@@ -66,7 +66,7 @@ void Shader::compile(std::filesystem::path vertdata, std::filesystem::path fragd
 			exit(1);
 		}
 	}
-	catch (exception e)
+	catch (std::exception e)
 	{
 		std::cerr << "Fragment Shader couldn't be loaded" << std::endl;
 		exit(1);

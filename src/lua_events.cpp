@@ -23,7 +23,7 @@ class keydown : public luau_event
 
 			lua_pushstring(L, key_down.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::std::endl;
+				std::cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 				lua_pop(L, 1);
 			}
 			//else
@@ -45,7 +45,7 @@ class keyup : public luau_event
 
 			lua_pushstring(L, key_up.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::std::endl;
+				std::cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 				lua_pop(L, 1);
 			}
 			//else
@@ -67,7 +67,7 @@ public:
 
 		lua_pushnumber(L, deltaTime);
 		if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-			cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::std::endl;
+			std::cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
 			lua_pop(L, 1);
 		}
 	}

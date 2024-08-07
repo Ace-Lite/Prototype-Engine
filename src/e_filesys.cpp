@@ -20,7 +20,7 @@ std::string readFile(std::filesystem::path path)
 	std::ifstream f(path, std::ios::in | std::ios::binary);
 
 	// Obtain the size of the file.
-	const auto sz = filesystem::file_size(path);
+	const auto sz = std::filesystem::file_size(path);
 
 	// Create a buffer.
 	std::string result(sz, '\0');

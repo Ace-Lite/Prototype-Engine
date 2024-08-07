@@ -3,7 +3,6 @@
 #include "gl_shader.hpp"
 #include "gl_sprite.hpp"
 #include "gl/glew.h"
-using namespace std;
 
 struct vector2data
 {
@@ -25,14 +24,22 @@ public:
 	vector<int*> frames;
 };
 
-class Entity // Entity without any logic (meant to be controlled by something else)
+class SpatialExistence // Entity without any logic (meant to be controlled by something else)
 {
 public:
 	// NOTE: Feel free to change these into Vector3 values.
-	vector3data pos = {0.00f, 0.00f, 0.00f}; // Z should be used for 3D in case we went that direction 
+	vector3data pos = { 0.00f, 0.00f, 0.00f }; // Z should be used for 3D in case we went that direction 
 	vector3data angles = { 0.00f, 0.00f, 0.00f };; // For 3D objects in both modes. (pitch for 2D sprites) and sprite flipping
-	vector3data scale = {1.0f, 1.0f, 1.0f}; // scales (Z 3D only)
+	vector3data scale = { 1.0f, 1.0f, 1.0f }; // scales (Z 3D only)
+};
 
+//
+// These are classes regarding visible objects.
+//
+
+class Entity : public SpatialExistence // Entity without any logic (meant to be controlled by something else)
+{
+public:
 	bool visible = false; // Mostly for 2D, could possibly be used for 3D culling.
 
 	float alpha;
@@ -63,6 +70,27 @@ public:
 	int embscript;
 	int table;
 };
+
+//
+//	Misc
+//
+
+class Camera : public SpatialExistence {
+	Object* target;
+};
+
+// Could be used for players
+class Controller : public SpatialExistence {
+	Camera* camera;
+
+	// Lua stuff
+	int events;
+	int embscript;
+};
+
+//
+//	Manager
+//
 
 class EntityManager {
 	public:

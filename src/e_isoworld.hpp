@@ -4,11 +4,9 @@
 
 #include "entities.hpp"
 
-using namespace std;
-
 class IsoMusicPlacement {
-	string Peaceful;
-	string Combat;
+	std::string Peaceful;
+	std::string Combat;
 };
 
 class IsoSpatial {
@@ -26,8 +24,8 @@ class IsoBackground {
 };
 
 class IsoTileDefitions {
-	vector<int> data; // tile id
-	vector<float> *elevation;
+	std::vector<int> data; // tile id
+	std::vector<float> *elevation;
 
 	IsoTileDefitions();
 };
@@ -42,9 +40,9 @@ class IsoLayer : IsoSpatial {
 	IsoMusicPlacement music;
 
 	// Collision blockmap
-	vector<int> collision;
-	vector<float> elevation;
-	vector<Object*> objects;
+	std::vector<int> collision;
+	std::vector<float> elevation;
+	std::vector<Object*> objects;
 
 	IsoLayer();
 
@@ -54,8 +52,8 @@ public:
 };
 
 class IsoChunk {
-	string tileset;
-	vector<IsoLayer*> layers;
+	std::string tileset;
+	std::vector<IsoLayer*> layers;
 
 	// these are offsets
 	int pos_x, pos_y;
@@ -73,15 +71,15 @@ class IsoLevel : IsoSpatial {
 	int width = 32;
 	int height = 32;
 
-	string name = "missing!";
-	string alias = "missing!";	
+	std::string name = "missing!";
+	std::string alias = "missing!";	
 
-	vector<bool> flags; // flags for settings the level
-	vector<bool> levelflags; // flags for level use for setpieces
+	std::vector<bool> flags; // flags for settings the level
+	std::vector<bool> levelflags; // flags for level use for setpieces
 
-	vector<IsoChunk*> chunks;
+	std::vector<IsoChunk*> chunks;
 	
-	IsoLevel(string level) {
+	IsoLevel(std::string level) {
 		width = 32; // TODO: write level loader
 	}
 

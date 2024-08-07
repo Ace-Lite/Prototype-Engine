@@ -1,12 +1,11 @@
 #pragma once
 #include <iostream>
 #include <vector>
-using namespace std;
 
-extern vector<string*>sound_paths;
+extern std::vector<std::string*>sound_paths;
 
-extern vector<string*>model_paths;
+extern std::vector<std::string*>model_paths;
 
-extern vector<string*>sprite_paths;
+extern std::vector<std::string*>sprite_paths;
 
-extern vector<string*>level_paths;
+extern std::vector<std::string*>level_paths;

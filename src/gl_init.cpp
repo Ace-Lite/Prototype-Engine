@@ -15,8 +15,6 @@
 
 #include "entities.hpp"
 
-using namespace std;
-
 GLuint gVBO = 0;
 GLuint gEBO = 0;
 
@@ -71,11 +69,11 @@ bool initGL()
 	return noerr;
 }
 
-bool GL_loadDefaultContent(string path)
+bool GL_loadDefaultContent(std::string path)
 {
 	try
 	{
-		string errorSpritePath = path + "\\sprites\\error.png";
+		std::string errorSpritePath = path + "\\sprites\\error.png";
 		Sprite errorNewSprite(&errorSpritePath);
 		errorSprite = &errorNewSprite;
 
@@ -95,14 +93,22 @@ bool GL_loadDefaultContent(string path)
 void GL_test()
 {
 	Object* obj1 = EntityManager::createObject();
-	obj1->pos = {32.0f, 32.0f};
+	obj1->pos = {32.0f, 32.0f, 0.0f };
 	obj1->sprite = errorSprite;
 	obj1->shader = defaultShader;
+	obj1->alpha = 1.0f;
 
 	Object* obj2 = EntityManager::createObject();
-	obj2->pos = { 128.0f, 52.0f };
+	obj2->pos = { 128.0f, 52.0f, 0.0f };
 	obj2->sprite = errorSprite;
 	obj2->shader = defaultShader;
+	obj2->alpha = 1.0f;
+
+	Object* obj3 = EntityManager::createObject();
+	obj3->pos = { 0.0f, 0.0f, 0.0f };
+	obj3->sprite = errorSprite;
+	obj3->shader = defaultShader;
+	obj3->alpha = 1.0f;
 }
 
 bool GL_rendererRender(SDL_Window* window)

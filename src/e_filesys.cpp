@@ -9,14 +9,12 @@
 #include <lualib.h>
 #include <luacode.h>
 
-using namespace std;
+std::vector<std::string*>sound_paths;
+std::vector<std::string*>model_paths;
+std::vector<std::string*>sprite_paths;
+std::vector<std::string*>level_paths;
 
-vector<string*>sound_paths;
-vector<string*>model_paths;
-vector<string*>sprite_paths;
-vector<string*>level_paths;
-
-std::string readFile(filesystem::path path)
+std::string readFile(std::filesystem::path path)
 {
 	// Open the stream to 'lock' the file.
 	std::ifstream f(path, std::ios::in | std::ios::binary);
@@ -47,18 +45,18 @@ void loadLuaString(lua_State* L, const char* name, const char* stringscript)
 		free(script);
 		if (err == 1)
 		{
-			cout << lua_tostring(thread, -1) << endl;
+			std::cout << lua_tostring(thread, -1) << std::endl;
 			lua_resetthread(thread);
 		}
 		else
 		{
-			cout << "Script: " << name << " is Loaded" << endl;
+			std::cout << "Script: " << name << " is Loaded" << std::endl;
 			lua_resume(thread, NULL, 0);
 		}
 	}
 }
 
-static void loadLuaFile(lua_State* L, filesystem::path path)
+static void loadLuaFile(lua_State* L, std::filesystem::path path)
 {
 	std::string strtext = readFile(path);
 	const char* text = strtext.c_str();
@@ -73,11 +71,11 @@ static void loadLuaFile(lua_State* L, filesystem::path path)
 
 int searchscripts = 0;
 
-void loadLuaFolder(lua_State* L, filesystem::path initpath, filesystem::path path)
+void loadLuaFolder(lua_State* L, std::filesystem::path initpath, std::filesystem::path path)
 {
-	if (!filesystem::exists(initpath))
+	if (!std::filesystem::exists(initpath))
 	{
-		for (auto scriptfile = filesystem::recursive_directory_iterator(path); scriptfile != filesystem::recursive_directory_iterator(); scriptfile++)
+		for (auto scriptfile = std::filesystem::recursive_directory_iterator(path); scriptfile != std::filesystem::recursive_directory_iterator(); scriptfile++)
 		{
 			std::string std_extension = scriptfile->path().filename().extension().string();
 
@@ -89,7 +87,7 @@ void loadLuaFolder(lua_State* L, filesystem::path initpath, filesystem::path pat
 			++searchscripts;
 		}
 
-		cout << "found lua scripts: " << searchscripts << endl;
+		std::cout << "found lua scripts: " << searchscripts << std::endl;
 	}
 	else
 	{
@@ -97,9 +95,9 @@ void loadLuaFolder(lua_State* L, filesystem::path initpath, filesystem::path pat
 	}
 }
 
-void loadDataFolder(filesystem::path path)
+void loadDataFolder(std::filesystem::path path)
 {
-	for (auto data = filesystem::recursive_directory_iterator(path); data != filesystem::recursive_directory_iterator(); data++)
+	for (auto data = std::filesystem::recursive_directory_iterator(path); data != std::filesystem::recursive_directory_iterator(); data++)
 	{
 		std::string std_extension = data->path().filename().extension().string();
 

@@ -6,8 +6,6 @@
 // OpenGL
 #include "gl/glew.h"
 
-using namespace std;
-
 class Shader {
 	
 	// Program ID
@@ -25,7 +23,7 @@ public:
 		id_ = 0;
 	}
 
-	void compile(filesystem::path vertdata, filesystem::path fragdata);
+	void compile(std::filesystem::path vertdata, std::filesystem::path fragdata);
 	void activate();
 
 	// Considering as of right now we don't have vector and matrix datatypes as of my knowledge.

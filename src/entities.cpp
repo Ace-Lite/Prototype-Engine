@@ -6,7 +6,6 @@
 #include "gl_shader.hpp"
 #include "gl_sprite.hpp"
 #include "gl/glew.h"
-using namespace std;
 
 // SKYDUSK: 24/07/2024
 // This is very much prototype, not sure what to do here really.
@@ -22,12 +21,12 @@ using namespace std;
 #define GF_GRAVITY		1 << 1
 
 // Used for definitions
-vector<int*> definitions;
-vector<Object*> object_list;
-vector<Entity*> entity_list;
+std::vector<int*> definitions;
+std::vector<Object*> object_list;
+std::vector<Entity*> entity_list;
 
 // prototype blockmap, refactor when world is made.
-static vector<vector<Object*>> blockmap; //this setup is ridiculous.
+static std::vector<std::vector<Object*>> blockmap; //this setup is ridiculous.
 
 static GLuint incideQuad[] = { 0, 1, 2, 2, 3, 0 };
 extern Sprite* errorSprite;

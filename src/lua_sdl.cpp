@@ -5,7 +5,6 @@
 #include <vector>
 #include <iostream>
 #include <SDL.h>
-using namespace std;
 
 static int lualib_getWindowSize(lua_State* L)
 {

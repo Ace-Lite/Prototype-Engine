@@ -5,7 +5,6 @@
 #include <time.h>
 #include <SDL.h>
 #include "e_fps.h"
-using namespace std;
 
 extern float FPS;
 extern float deltaTime;
@@ -18,11 +17,11 @@ static int engine_print(lua_State* L)
         size_t l;
         const char* s = luaL_tolstring(L, i, &l); // convert to string using __tostring et al
         if (i > 1)
-            cout << "\t";
-        cout << s;
+            std::cout << "\t";
+        std::cout << s;
         lua_pop(L, 1); // pop result
     }
-    cout << "\n";
+    std::cout << "\n";
     return 0;
 }
 

@@ -249,10 +249,13 @@
     <ClCompile Include="lua_object.cpp">
       <Filter>Source Files\LUAU_API</Filter>
     </ClCompile>
-    <ClCompile Include="e_isoworld.hpp">
-      <Filter>Header Files\ENGINE</Filter>
-    </ClCompile>
     <ClCompile Include="e_isoworld.cpp">
+      <Filter>Source Files\ENGINE</Filter>
+    </ClCompile>
+    <ClCompile Include="e_isoworld.hpp">
+      <Filter>Header Files\WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="e_saving.cpp">
       <Filter>Source Files\ENGINE</Filter>
     </ClCompile>
   </ItemGroup>
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="gl_sprite.hpp">
       <Filter>Header Files\RENDER</Filter>
+    </ClInclude>
+    <ClInclude Include="e_saving.hpp">
+      <Filter>Header Files\ENGINE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

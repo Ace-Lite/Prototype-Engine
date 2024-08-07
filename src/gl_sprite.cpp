@@ -6,8 +6,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-using namespace std;
-
 void Sprite::bind()
 {
 	glActiveTexture(GL_TEXTURE0);

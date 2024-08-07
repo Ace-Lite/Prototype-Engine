@@ -10,11 +10,10 @@
 #include "lua_render.h"
 #include "gl_shader.hpp"
 #include "gl_sprite.hpp"
-using namespace std;
 
 static int gl_cacheShader(lua_State* L)
 {
-    string filepath = SDL_GetBasePath();
+    std::string filepath = SDL_GetBasePath();
 
     filesystem::path vectShaderPath = filepath + "\\data\\" + luaL_checkstring(L, 1);
     filesystem::path fragShaderPath = filepath + "\\data\\" + luaL_checkstring(L, 2);
@@ -28,8 +27,8 @@ vector<Sprite*> customSpriteList;
 
 static int gl_cacheSprite(lua_State* L)
 {
-    string filepath = SDL_GetBasePath();
-    string spritePath = filepath + "\\data\\" + luaL_checkstring(L, 1);
+    std::string filepath = SDL_GetBasePath();
+    std::string spritePath = filepath + "\\data\\" + luaL_checkstring(L, 1);
 
     Sprite spriteEntry(&spritePath);
     customSpriteList.push_back(&spriteEntry);

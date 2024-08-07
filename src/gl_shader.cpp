@@ -8,9 +8,7 @@
 
 #include "e_filesys.h"
 
-using namespace std;
-
-void Shader::compile(filesystem::path vertdata, filesystem::path fragdata)
+void Shader::compile(std::filesystem::path vertdata, std::filesystem::path fragdata)
 {
 	GLuint vertexshader, fragmentshader;
 	GLint success = true;
@@ -22,7 +20,7 @@ void Shader::compile(filesystem::path vertdata, filesystem::path fragdata)
 
 	try
 	{
-		string source = readFile(vertdata);
+		std::string source = readFile(vertdata);
 
 		const char* c_source = source.c_str();
 
@@ -35,13 +33,13 @@ void Shader::compile(filesystem::path vertdata, filesystem::path fragdata)
 		if (!success)
 		{
 			glGetShaderInfoLog(vertexshader, 512, nullptr, log);
-			cerr << "Vertex shader couldn't be compiled | " << source << endl << log << endl;
+			std::cerr << "Vertex shader couldn't be compiled | " << source << std::endl << log << std::endl;
 			exit(1);
 		}
 	}
 	catch (exception e)
 	{
-		cerr << "Vertex Shader couldn't be loaded" << endl;
+		std::cerr << "Vertex Shader couldn't be loaded" << std::endl;
 		exit(1);
 	}
 
@@ -51,7 +49,7 @@ void Shader::compile(filesystem::path vertdata, filesystem::path fragdata)
 
 	try
 	{
-		string source = readFile(fragdata);
+		std::string source = readFile(fragdata);
 
 		const char* c_source = source.c_str();
 
@@ -64,13 +62,13 @@ void Shader::compile(filesystem::path vertdata, filesystem::path fragdata)
 		if (!success)
 		{
 			glGetShaderInfoLog(fragmentshader, 512, nullptr, log);
-			cerr << "Fragment shader couldn't be compiled | " << source << endl << log << endl;
+			std::cerr << "Fragment shader couldn't be compiled | " << source << std::endl << log << std::endl;
 			exit(1);
 		}
 	}
 	catch (exception e)
 	{
-		cerr << "Fragment Shader couldn't be loaded" << endl;
+		std::cerr << "Fragment Shader couldn't be loaded" << std::endl;
 		exit(1);
 	}
 
@@ -86,7 +84,7 @@ void Shader::compile(filesystem::path vertdata, filesystem::path fragdata)
 	if (!success)
 	{
 		glGetProgramInfoLog(id_, 512, nullptr, log);
-		cerr << "Program linking error" << endl << log << endl;
+		std::cerr << "Program linking error" << std::endl << log << std::endl;
 		exit(1);
 	}
 

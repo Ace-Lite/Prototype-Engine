@@ -35,8 +35,6 @@ extern lua_State* L;
 
 bool gRenderQuad = true;
 
-using namespace std;
-
 const int WIN_WIDTH = 400;
 const int WIN_HEIGHT = 400;
 
@@ -49,7 +47,7 @@ int main(int arg)
 	//	File System Declarations
 	//
 
-	string filepath = SDL_GetBasePath();
+	std::string filepath = SDL_GetBasePath();
 
 	std::filesystem::path luapath = filepath + "scripts";
 	std::filesystem::path datapath = filepath + "data";
@@ -57,7 +55,7 @@ int main(int arg)
 	if (!filesystem::exists(luapath))
 	{
 #ifdef DEBUG_MODE
-		cout << "[Debug ERROR] No path to lua was found." << endl;
+		std::cout << "[Debug ERROR] No path to lua was found." << std::endl;
 #endif
 		return 0;
 	}
@@ -65,13 +63,13 @@ int main(int arg)
 	if (!filesystem::exists(datapath))
 	{
 #ifdef DEBUG_MODE
-		cout << "[Debug ERROR] No path to data was found." << endl;
+		std::cout << "[Debug ERROR] No path to data was found." << std::endl;
 #endif
 		return 0;
 	}
 
 #ifdef DEBUG_MODE
-	cout << "[Debug NOTE] Path to lua & data was found!" << endl;
+	std::cout << "[Debug NOTE] Path to lua & data was found!" << std::endl;
 #endif
 
 	loadDataFolder(datapath);
@@ -85,7 +83,7 @@ int main(int arg)
 	//SDL_Renderer* renderer = nullptr;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		cout << "Error during SDL_Init: " << SDL_GetError() << endl;
+		std::cout << "Error during SDL_Init: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return 1;
 	}
@@ -94,14 +92,14 @@ int main(int arg)
 			SDL_WINDOWPOS_UNDEFINED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
 		if (window == nullptr) {
-			cout << "Error during SDL_CreateWindow: " << SDL_GetError() << endl;
+			std::cout << "Error during SDL_CreateWindow: " << SDL_GetError() << std::endl;
 			SDL_Quit();
 			return -1;
 		}
 	}
 
 	if (Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3) < 0) {
-		cout << "Error during SDL_Mix_Init: " << Mix_GetError() << endl;
+		std::cout << "Error during SDL_Mix_Init: " << Mix_GetError() << std::endl;
 		Mix_Quit();
 	}
 
@@ -119,7 +117,7 @@ int main(int arg)
 
 	if (gContext == nullptr)
 	{
-		cout << "Error during SDL_GL_CreateContext: " << SDL_GetError() << endl;
+		std::cout << "Error during SDL_GL_CreateContext: " << SDL_GetError() << std::endl;
 		SDL_Delay(250);
 		Mix_Quit();
 		SDL_Quit();
@@ -132,7 +130,7 @@ int main(int arg)
 
 		if (glewError != GLEW_OK)
 		{
-			cout << "Error during initiation of GLEW: " << glewGetErrorString(glewError) << endl;
+			std::cout << "Error during initiation of GLEW: " << glewGetErrorString(glewError) << std::endl;
 			SDL_Delay(115000);
 			Mix_Quit();
 			SDL_Quit();
@@ -141,20 +139,20 @@ int main(int arg)
 
 		if (SDL_GL_SetSwapInterval(1) < 0)
 		{
-			cout << "Warning! Unable to set VSync. SDL2 Error: " << SDL_GetError() << endl;
+			std::cout << "Warning! Unable to set VSync. SDL2 Error: " << SDL_GetError() << std::endl;
 			SDL_Delay(25);
 		}
 
 		if (SDL_GL_MakeCurrent(window, gContext) < 0)
 		{
-			cout << "Warning! Unable to set current of GL. SDL2 Error: " << SDL_GetError() << endl;
+			std::cout << "Warning! Unable to set current of GL. SDL2 Error: " << SDL_GetError() << std::endl;
 			SDL_Delay(25);
 
 		}
 
 		if (!initGL())
 		{
-			cout << "Error while initializing OpenGL." << endl;
+			std::cout << "Error while initializing OpenGL." << std::endl;
 			SDL_Delay(115000);
 			Mix_Quit();
 			SDL_Quit();
@@ -188,7 +186,7 @@ int main(int arg)
 				quit = true;
 				break;
 			case SDL_KEYDOWN:
-				//cout << lua_gettop(L) << endl;
+				//cout << lua_gettop(L) << std::endl;
 				events_keydown_press(L, SDL_GetKeyName(e.key.keysym.sym));
 				break;
 			case SDL_KEYUP:

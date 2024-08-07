@@ -162,6 +162,7 @@
     <ClCompile Include="ease.cpp" />
     <ClCompile Include="e_isoworld.cpp" />
     <ClCompile Include="e_isoworld.hpp" />
+    <ClCompile Include="e_saving.cpp" />
     <ClCompile Include="gl_init.cpp" />
     <ClCompile Include="gl_shader.cpp" />
     <ClCompile Include="lcode.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="entities.hpp" />
     <ClInclude Include="e_filepaths.h" />
     <ClInclude Include="e_filesys.h" />
+    <ClInclude Include="e_saving.hpp" />
     <ClInclude Include="gl_init.hpp" />
     <ClInclude Include="gl_shader.hpp" />
     <ClInclude Include="gl_sprite.hpp" />

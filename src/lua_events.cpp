@@ -23,12 +23,12 @@ class keydown : public luau_event
 
 			lua_pushstring(L, key_down.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
+				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::std::endl;
 				lua_pop(L, 1);
 			}
 			//else
 			//{
-			//	cout << "Activate " << event_func << endl;
+			//	cout << "Activate " << event_func << std::endl;
 			//}
 		}
 };
@@ -45,12 +45,12 @@ class keyup : public luau_event
 
 			lua_pushstring(L, key_up.c_str());
 			if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
+				cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::std::endl;
 				lua_pop(L, 1);
 			}
 			//else
 			//{
-			//	cout << "Activate " << event_func << endl;
+			//	cout << "Activate " << event_func << std::endl;
 			//}
 		}
 };
@@ -67,7 +67,7 @@ public:
 
 		lua_pushnumber(L, deltaTime);
 		if (lua_pcall(L, 1, 0, 0) != LUA_OK) {
-			cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::endl;
+			cerr << "Error while calling function " << event_func << ": " << lua_tostring(L, -1) << std::std::endl;
 			lua_pop(L, 1);
 		}
 	}
@@ -117,7 +117,7 @@ void events_keydown_press(lua_State* L, std::string key_event)
 		lua_pop(L, -1);
 
 	if (keydown_events.empty())
-		cout << "No Keydown Events" << endl;
+		cout << "No Keydown Events" << std::endl;
 	else
 	{
 		for (auto it = keydown_events.begin(); it != keydown_events.end(); ++it)
@@ -133,7 +133,7 @@ void events_keyup_press(lua_State* L, std::string key_event)
 		lua_pop(L, -1);
 
 	if (keyup_events.empty())
-		cout << "No Keyup Events" << endl;
+		cout << "No Keyup Events" << std::endl;
 	else
 	{
 		for (auto it = keyup_events.begin(); it != keyup_events.end(); ++it)

@@ -31,6 +31,14 @@ public:
 	vector3data pos = { 0.00f, 0.00f, 0.00f }; // Z should be used for 3D in case we went that direction 
 	vector3data angles = { 0.00f, 0.00f, 0.00f };; // For 3D objects in both modes. (pitch for 2D sprites) and sprite flipping
 	vector3data scale = { 1.0f, 1.0f, 1.0f }; // scales (Z 3D only)
+
+	float dist(float x, float y, float z);
+	float dist(vector3data aim);
+	float dist(vector2data aim);
+
+	float dir2D(float x, float y);
+	float dir2D(vector3data aim);
+	float dir2D(vector2data aim);
 };
 
 //
@@ -56,9 +64,10 @@ public:
 class Object : public Entity // Entity with gamelogic
 {
 public:
+	vector3data momentum;
+
 	int physics_flags = 0;
 	float gravity_scale = 1.0f;
-
 
 	// Object relations
 	Object* target;

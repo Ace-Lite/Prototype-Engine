@@ -4,6 +4,11 @@
 
 #include "entities.hpp"
 
+constexpr auto CHUNK_SIZE = 64.0f;
+
+constexpr auto TILE_WIDTH = 64.0f;
+constexpr auto TILE_HEIGHT = 32.0f;
+
 class IsoMusicPlacement {
 	std::string Peaceful;
 	std::string Combat;
@@ -66,18 +71,6 @@ public:
 };
 
 class IsoLevel : IsoSpatial {
-	// default variables
-	// chunk - 32 x 32
-	int width = 32;
-	int height = 32;
-
-	std::string name = "missing!";
-	std::string alias = "missing!";	
-
-	std::vector<bool> flags; // flags for settings the level
-	std::vector<bool> levelflags; // flags for level use for setpieces
-
-	std::vector<IsoChunk*> chunks;
 	
 	IsoLevel(std::string level) {
 		width = 32; // TODO: write level loader
@@ -89,5 +82,19 @@ class IsoLevel : IsoSpatial {
 
 public:
 
+	// default variables
+	// chunk - 32 x 32
+	int width = 32;
+	int height = 32;
+
+	std::string name = "missing!";
+	std::string alias = "missing!";
+
+	std::vector<bool> flags; // flags for settings the level
+	std::vector<bool> levelflags; // flags for level use for setpieces
+
+	std::vector<IsoChunk*> chunks;
+
 	IsoChunk* getChunk(float x, float y);
+	IsoLayer* getLayer(float x, float y, float z);
 };

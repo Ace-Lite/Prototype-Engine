@@ -246,7 +246,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lua_object.cpp">
+    <ClCompile Include="lua_objects.cpp">
       <Filter>Source Files\LUAU_API</Filter>
     </ClCompile>
     <ClCompile Include="e_isoworld.cpp">
@@ -421,5 +421,6 @@
     <None Include="..\bin\data\shaders\main.vert">
       <Filter>Resource Files\SHADERS</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

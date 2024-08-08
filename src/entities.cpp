@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <math.h>
 #include "entities.hpp"
 
 #include "gl_init.hpp"
@@ -30,6 +31,25 @@ static std::vector<std::vector<Object*>> blockmap; //this setup is ridiculous.
 
 static GLuint incideQuad[] = { 0, 1, 2, 2, 3, 0 };
 extern Sprite* errorSprite;
+
+//
+//	Object relation math functions	
+//
+
+#define powt2(x) (float)std::pow(x, 2)
+#define sqrt2(x) (float)std::sqrt(x)
+
+float SpatialExistence::dist(float x, float y, float z) { return sqrt2(powt2(pos.x - x) + powt2(pos.y - y) + powt2(pos.z - z)); }
+float SpatialExistence::dist(vector3data aim) { return sqrt2(powt2(pos.x - aim.x) + powt2(pos.y - aim.y) + powt2(pos.z - aim.z)); }
+float SpatialExistence::dist(vector2data aim) { return sqrt2(powt2(pos.x - aim.x) + powt2(pos.y - aim.y)); }
+
+float SpatialExistence::dir2D(float x, float y) { return atan2(pos.y - y, pos.x - x); }
+float SpatialExistence::dir2D(vector3data aim) { return atan2(pos.y - aim.y, pos.x - aim.x); }
+float SpatialExistence::dir2D(vector2data aim) { return atan2(pos.y - aim.y, pos.x - aim.x); }
+
+//
+//	Entity Manager
+//
 
 Object* EntityManager::createObject()
 {

@@ -1,0 +1,4 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define objectdist(obj) {return sqrt2(powt2(pos.x - obj.x) + powt2(pos.y - obj.y) + powt2(pos.z - obj.z));}
